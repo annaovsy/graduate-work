@@ -1,0 +1,52 @@
+﻿@model TestWithoutAutentification.ViewModels.CompanyRegisterModel
+
+<h2>Регистрация</h2>
+
+<form asp-antiforgery="true" asp-action="CompanyRegister" asp-controller="Account" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div>
+            <label asp-for="Name">Введите Название компании</label><br />
+            <input type="text" asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="City">Введите Город</label><br />
+            <input type="text" asp-for="City" />
+            <span asp-validation-for="City"></span>
+        </div>
+        <div>
+            <label asp-for="FirstNameContactPerson">Введите Имя</label><br />
+            <input type="text" asp-for="FirstNameContactPerson" />
+            <span asp-validation-for="FirstNameContactPerson"></span>
+        </div>
+        <div>
+            <label asp-for="LastNameContactPerson">Введите Фамилию</label><br />
+            <input type="text" asp-for="LastNameContactPerson" />
+            <span asp-validation-for="LastNameContactPerson"></span>
+        </div>
+        <div>
+            <label asp-for="Email">Введите Email</label><br />
+            <input type="text" asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label asp-for="Password">Введите пароль</label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
+            <input asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
+        <div>
+            <label asp-for="Phone">Введите Телефон</label><br />
+            <input asp-for="Phone" />
+            <span asp-validation-for="Phone"></span>
+        </div>
+        <div>
+            <input type="submit" value="Регистрация" />
+        </div>
+    </div>
+</form>
