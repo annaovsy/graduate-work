@@ -106,7 +106,7 @@ namespace TestWithoutAutentification.Controllers
                 if (company != null)
                 {
                     await Authenticate(company.Name, company.Role.Name);
-
+                    
                     return RedirectToAction("Index", "CompanyHome");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220922074247_AddResumeModelsMigr")]
+    partial class AddResumeModelsMigr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -314,9 +316,6 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<string>("AboutMyself")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CitizenshipId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
 
@@ -326,14 +325,8 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int?>("EducationLevelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EducationalInstitutionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ForeignLanguageId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -342,9 +335,6 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("NativeLanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlaceOfWorkId")
                         .HasColumnType("int");
 
                     b.Property<string>("Position")
@@ -432,14 +422,14 @@ namespace TestWithoutAutentification.Migrations
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Citizenship", b =>
                 {
                     b.HasOne("TestWithoutAutentification.Models.Resume", null)
-                        .WithMany("Citizenships")
+                        .WithMany("Citizenship")
                         .HasForeignKey("ResumeId");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.EducationalInstitution", b =>
                 {
                     b.HasOne("TestWithoutAutentification.Models.Resume", null)
-                        .WithMany("EducationalInstitutions")
+                        .WithMany("EducationalInstitution")
                         .HasForeignKey("ResumeId");
                 });
 
@@ -454,7 +444,7 @@ namespace TestWithoutAutentification.Migrations
                         .HasForeignKey("LanguageLevelId");
 
                     b.HasOne("TestWithoutAutentification.Models.Resume", null)
-                        .WithMany("ForeignLanguages")
+                        .WithMany("ForeignLanguage")
                         .HasForeignKey("ResumeId");
 
                     b.Navigation("Language");
@@ -474,7 +464,7 @@ namespace TestWithoutAutentification.Migrations
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.PlaceOfWork", b =>
                 {
                     b.HasOne("TestWithoutAutentification.Models.Resume", null)
-                        .WithMany("PlacesOfWork")
+                        .WithMany("PlaceOfWork")
                         .HasForeignKey("ResumeId");
                 });
 
@@ -546,13 +536,13 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.Resume", b =>
                 {
-                    b.Navigation("Citizenships");
+                    b.Navigation("Citizenship");
 
-                    b.Navigation("EducationalInstitutions");
+                    b.Navigation("EducationalInstitution");
 
-                    b.Navigation("ForeignLanguages");
+                    b.Navigation("ForeignLanguage");
 
-                    b.Navigation("PlacesOfWork");
+                    b.Navigation("PlaceOfWork");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.Role", b =>
