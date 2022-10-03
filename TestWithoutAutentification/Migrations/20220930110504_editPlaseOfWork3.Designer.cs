@@ -10,33 +10,58 @@ using TestWithoutAutentification.Models;
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220922075658_AddResumeEdit2")]
-    partial class AddResumeEdit2
+    [Migration("20220930110504_editPlaseOfWork3")]
+    partial class editPlaseOfWork3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.17")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CitizenshipResume", b =>
+                {
+                    b.Property<int>("CitizenshipsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResumesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CitizenshipsId", "ResumesId");
+
+                    b.HasIndex("ResumesId");
+
+                    b.ToTable("CitizenshipResume");
+                });
+
+            modelBuilder.Entity("ForeignLanguageResume", b =>
+                {
+                    b.Property<int>("ForeignLanguagesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResumesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ForeignLanguagesId", "ResumesId");
+
+                    b.HasIndex("ResumesId");
+
+                    b.ToTable("ForeignLanguageResume");
+                });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Citizenship", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResumeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
 
                     b.ToTable("Citizenship");
                 });
@@ -46,7 +71,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -61,7 +86,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -76,7 +101,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -91,7 +116,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Department")
                         .HasColumnType("nvarchar(max)");
@@ -102,7 +127,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Specialization")
@@ -120,15 +145,12 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("LanguageId")
+                    b.Property<int>("LanguageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LanguageLevelId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("LanguageLevelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -136,8 +158,6 @@ namespace TestWithoutAutentification.Migrations
                     b.HasIndex("LanguageId");
 
                     b.HasIndex("LanguageLevelId");
-
-                    b.HasIndex("ResumeId");
 
                     b.ToTable("ForeignLanguage");
                 });
@@ -147,7 +167,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -162,7 +182,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -172,37 +192,22 @@ namespace TestWithoutAutentification.Migrations
                     b.ToTable("LanguageLevel");
                 });
 
-            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.NativeLanguage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("NativeLanguage");
-                });
-
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.PlaceOfWork", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Organization")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ResumeId")
@@ -223,12 +228,12 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CurrencyId")
+                    b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -243,7 +248,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -258,7 +263,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -273,7 +278,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -311,13 +316,10 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AboutMyself")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CitizenshipId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
@@ -328,26 +330,14 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int?>("EducationLevelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EducationalInstitutionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ForeignLanguageId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MobilePhone")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NativeLanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlaceOfWorkId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Position")
                         .HasColumnType("nvarchar(max)");
@@ -356,6 +346,9 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("SexId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int?>("WorkExperienceId")
@@ -367,11 +360,15 @@ namespace TestWithoutAutentification.Migrations
 
                     b.HasIndex("EducationLevelId");
 
-                    b.HasIndex("NativeLanguageId");
-
-                    b.HasIndex("SalaryId");
+                    b.HasIndex("SalaryId")
+                        .IsUnique()
+                        .HasFilter("[SalaryId] IS NOT NULL");
 
                     b.HasIndex("SexId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.HasIndex("WorkExperienceId");
 
@@ -383,7 +380,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -410,7 +407,7 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -431,60 +428,82 @@ namespace TestWithoutAutentification.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Citizenship", b =>
+            modelBuilder.Entity("CitizenshipResume", b =>
                 {
+                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Citizenship", null)
+                        .WithMany()
+                        .HasForeignKey("CitizenshipsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TestWithoutAutentification.Models.Resume", null)
-                        .WithMany("Citizenships")
-                        .HasForeignKey("ResumeId");
+                        .WithMany()
+                        .HasForeignKey("ResumesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ForeignLanguageResume", b =>
+                {
+                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.ForeignLanguage", null)
+                        .WithMany()
+                        .HasForeignKey("ForeignLanguagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestWithoutAutentification.Models.Resume", null)
+                        .WithMany()
+                        .HasForeignKey("ResumesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.EducationalInstitution", b =>
                 {
-                    b.HasOne("TestWithoutAutentification.Models.Resume", null)
+                    b.HasOne("TestWithoutAutentification.Models.Resume", "Resume")
                         .WithMany("EducationalInstitutions")
-                        .HasForeignKey("ResumeId");
+                        .HasForeignKey("ResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.ForeignLanguage", b =>
                 {
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId");
+                        .WithMany("ForeignLanguages")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.LanguageLevel", "LanguageLevel")
-                        .WithMany()
-                        .HasForeignKey("LanguageLevelId");
-
-                    b.HasOne("TestWithoutAutentification.Models.Resume", null)
                         .WithMany("ForeignLanguages")
-                        .HasForeignKey("ResumeId");
+                        .HasForeignKey("LanguageLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Language");
 
                     b.Navigation("LanguageLevel");
                 });
 
-            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.NativeLanguage", b =>
-                {
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId");
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.PlaceOfWork", b =>
                 {
-                    b.HasOne("TestWithoutAutentification.Models.Resume", null)
+                    b.HasOne("TestWithoutAutentification.Models.Resume", "Resume")
                         .WithMany("PlacesOfWork")
                         .HasForeignKey("ResumeId");
+
+                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Salary", b =>
                 {
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .WithMany("Salaries")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Currency");
                 });
@@ -501,38 +520,38 @@ namespace TestWithoutAutentification.Migrations
             modelBuilder.Entity("TestWithoutAutentification.Models.Resume", b =>
                 {
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.City", "City")
-                        .WithMany()
+                        .WithMany("Resumes")
                         .HasForeignKey("CityId");
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.EducationLevel", "EducationLevel")
-                        .WithMany()
+                        .WithMany("Resumes")
                         .HasForeignKey("EducationLevelId");
 
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.NativeLanguage", "NativeLanguage")
-                        .WithMany()
-                        .HasForeignKey("NativeLanguageId");
-
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Salary", "Salary")
-                        .WithMany()
-                        .HasForeignKey("SalaryId");
+                        .WithOne("Resume")
+                        .HasForeignKey("TestWithoutAutentification.Models.Resume", "SalaryId");
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Sex", "Sex")
-                        .WithMany()
+                        .WithMany("Resumes")
                         .HasForeignKey("SexId");
 
+                    b.HasOne("TestWithoutAutentification.Models.User", "User")
+                        .WithOne("Resume")
+                        .HasForeignKey("TestWithoutAutentification.Models.Resume", "UserId");
+
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.WorkExperience", "WorkExperience")
-                        .WithMany()
+                        .WithMany("Resumes")
                         .HasForeignKey("WorkExperienceId");
 
                     b.Navigation("City");
 
                     b.Navigation("EducationLevel");
 
-                    b.Navigation("NativeLanguage");
-
                     b.Navigation("Salary");
 
                     b.Navigation("Sex");
+
+                    b.Navigation("User");
 
                     b.Navigation("WorkExperience");
                 });
@@ -546,13 +565,49 @@ namespace TestWithoutAutentification.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.City", b =>
+                {
+                    b.Navigation("Resumes");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Currency", b =>
+                {
+                    b.Navigation("Salaries");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.EducationLevel", b =>
+                {
+                    b.Navigation("Resumes");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Language", b =>
+                {
+                    b.Navigation("ForeignLanguages");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.LanguageLevel", b =>
+                {
+                    b.Navigation("ForeignLanguages");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Salary", b =>
+                {
+                    b.Navigation("Resume");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Sex", b =>
+                {
+                    b.Navigation("Resumes");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.WorkExperience", b =>
+                {
+                    b.Navigation("Resumes");
+                });
+
             modelBuilder.Entity("TestWithoutAutentification.Models.Resume", b =>
                 {
-                    b.Navigation("Citizenships");
-
                     b.Navigation("EducationalInstitutions");
-
-                    b.Navigation("ForeignLanguages");
 
                     b.Navigation("PlacesOfWork");
                 });
@@ -562,6 +617,11 @@ namespace TestWithoutAutentification.Migrations
                     b.Navigation("Companies");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("TestWithoutAutentification.Models.User", b =>
+                {
+                    b.Navigation("Resume");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,5 +9,7 @@ namespace TestWithoutAutentification.Models.AdditionalModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public List<Salary> Salaries { get; set; } = new();
     }
 }

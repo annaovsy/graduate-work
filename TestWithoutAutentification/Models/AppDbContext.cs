@@ -18,7 +18,6 @@ namespace TestWithoutAutentification.Models
         public DbSet<ForeignLanguage> ForeignLanguage { get; set; }
         public DbSet<Language> Language { get; set; }
         public DbSet<LanguageLevel> LanguageLevel { get; set; }
-        public DbSet<NativeLanguage> NativeLanguage { get; set; }
         public DbSet<PlaceOfWork> PlaceOfWork { get; set; }
         public DbSet<Salary> Salary { get; set; }
         public DbSet<Sex> Sex { get; set; }

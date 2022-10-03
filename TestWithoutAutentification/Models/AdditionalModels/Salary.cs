@@ -9,6 +9,10 @@ namespace TestWithoutAutentification.Models.AdditionalModels
     {
         public int Id { get; set; }
         public int Amount { get; set; }
+
+        public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
+
+        public Resume Resume { get; set; }
     }
 }

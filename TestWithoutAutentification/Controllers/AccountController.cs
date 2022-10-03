@@ -39,6 +39,8 @@ namespace TestWithoutAutentification.Controllers
                     await Authenticate(user.Name, user.Role.Name);
                     //await Authenticate(model.Email);
 
+                    var a = User.Identity.Name;
+
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
@@ -106,14 +108,14 @@ namespace TestWithoutAutentification.Controllers
                 if (company != null)
                 {
                     await Authenticate(company.Name, company.Role.Name);
-                    
+
                     return RedirectToAction("Index", "CompanyHome");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
-        
+
         [HttpGet]
         public IActionResult CompanyRegister()
         {

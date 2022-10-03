@@ -12,5 +12,8 @@ namespace TestWithoutAutentification.Models.AdditionalModels
         public string Department { get; set; }
         public string Specialization { get; set; }
         public int EndYear { get; set; }
+
+        public int ResumeId { get; set; }
+        public Resume Resume { get; set; }
     }
 }

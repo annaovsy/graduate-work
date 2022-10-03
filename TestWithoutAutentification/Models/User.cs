@@ -14,5 +14,7 @@ namespace TestWithoutAutentification.Models
 
         public int? RoleId { get; set; }
         public Role Role { get; set; }
+
+        public Resume Resume { get; set; }
     }
 }
