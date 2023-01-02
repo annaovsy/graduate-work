@@ -4,21 +4,23 @@
 
 <a asp-action="CompanyRegister" asp-controller="Account">Регистрация</a>
 
-<form asp-action="CompanyLogin" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
-        <div class="form-group">
-            <label asp-for="Email">Введите Email</label>
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password">Введите пароль</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Войти" class="btn btn-outline-dark" />
-        </div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CompanyLogin" asp-controller="Account" asp-anti-forgery="true">
+            <div class="validation text-danger" asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label">Введите Email</label>
+                    <input type="text" asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label">Введите пароль</label>
+                    <input asp-for="Password" class="form-control"/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Войти" class="btn btn-primary" />
+                </div>
+        </form>
     </div>
-</form>
+</div>

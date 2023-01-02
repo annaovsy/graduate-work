@@ -8,12 +8,14 @@ using System.Security.Claims;
 using TestWithoutAutentification.ViewModels; // пространство имен моделей RegisterModel и LoginModel
 using TestWithoutAutentification.Models; // пространство имен UserContext и класса User
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace TestWithoutAutentification.Controllers
 {
     public class AccountController : Controller
     {
         private Models.AppDbContext db;
+
         public AccountController(Models.AppDbContext context)
         {
             db = context;
@@ -35,12 +37,8 @@ namespace TestWithoutAutentification.Controllers
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
-                {
-                    await Authenticate(user.Name, user.Role.Name);
-                    //await Authenticate(model.Email);
-
-                    var a = User.Identity.Name;
-
+                {       
+                    await Authenticate(user.Email, user.Role.Name, user.Name);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
@@ -72,7 +70,7 @@ namespace TestWithoutAutentification.Controllers
 
                     await db.SaveChangesAsync();
 
-                    await Authenticate(user.Name, user.Role.Name); // аутентификация
+                    await Authenticate(user.Email, user.Role.Name, user.Name); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -107,7 +105,7 @@ namespace TestWithoutAutentification.Controllers
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (company != null)
                 {
-                    await Authenticate(company.Name, company.Role.Name);
+                    await Authenticate(company.Email, company.Role.Name, company.Name);
 
                     return RedirectToAction("Index", "CompanyHome");
                 }
@@ -138,7 +136,8 @@ namespace TestWithoutAutentification.Controllers
                         LastNameContactPerson = model.LastNameContactPerson,
                         Email = model.Email,
                         Password = model.Password,
-                        Phone = model.Phone
+                        Phone = model.Phone,
+                        Site = model.Site
                     };
                     Role companyRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "company");
                     if (companyRole != null)
@@ -148,7 +147,7 @@ namespace TestWithoutAutentification.Controllers
 
                     await db.SaveChangesAsync();
 
-                    await Authenticate(company.Name, company.Role.Name);
+                    await Authenticate(company.Email, company.Role.Name, company.Name);
 
                     return RedirectToAction("Index", "CompanyHome");
                 }
@@ -165,13 +164,14 @@ namespace TestWithoutAutentification.Controllers
 
         #endregion
 
-        private async Task Authenticate(string name, string role)
+        private async Task Authenticate(string email, string role, string name)
         {
             // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, name),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, role)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
+                new Claim("userName", name)
             };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);

@@ -9,6 +9,7 @@ namespace TestWithoutAutentification.Models
         public DbSet<Company> Companies { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Resume> Resume { get; set; }
+        public DbSet<Vacancy> Vacancy { get; set; }
 
         public DbSet<Citizenship> Citizenship { get; set; }
         public DbSet<City> City { get; set; }

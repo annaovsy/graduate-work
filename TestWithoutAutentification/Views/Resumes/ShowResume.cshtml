@@ -1,19 +1,16 @@
 ﻿@model TestWithoutAutentification.Models.Resume
- @*Показ резюме Пользователя*@
+@*Просмотр резюме (для сторонних людей)*@
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Просмотр Резюме";
 }
+
 <nav class="navbar navbar-expand-sm">
     <div class="container justify-content-end">
-        <partial name="_LoginPartial" />
+        <partial name="_LoginPartialCompany" />
     </div>
 </nav>
 
-<h3>Ваше резюме</h3>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-    <a asp-action="Delete" asp-route-id="@Model.Id" style="margin-left: 3.5vh;">Удалить</a>    
-</div>
+<h3>Просмотр резюме</h3>
 <div>
     <hr />
     <dl class="row">
@@ -108,4 +105,10 @@
             @Html.DisplayFor(model => model.EducationLevel.Name)
         </dd>
     </dl>
+</div>
+<div class="form-group">
+    <input type="button" class="btn btn-primary compItem" data-url="@Url.Action("GetPartialMail", "CompanyHome", new { id = Model.Id })" value="Связаться" />
+</div>
+<div>
+    <a asp-action="Index" asp-controller="CompanyHome">К списку</a>
 </div>

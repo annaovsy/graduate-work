@@ -4,32 +4,43 @@ namespace TestWithoutAutentification.ViewModels
 {
     public class CompanyRegisterModel
     {
-        [Required(ErrorMessage = "Не указано Название компании")]
+        [Display(Name = "Название компании")]
+        [Required(ErrorMessage = "Обязательное поле")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Не указан Город")]
+        [Display(Name = "Город")]
+        [Required(ErrorMessage = "Обязательное поле")]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Не указано Имя")]
+        [Display(Name = "Имя")]
+        [Required(ErrorMessage = "Обязательное поле")]
         public string FirstNameContactPerson { get; set; }
 
-        [Required(ErrorMessage = "Не указана Фамилия")]
+        [Display(Name = "Фамилия")]
+        [Required(ErrorMessage = "Обязательное поле")]
         public string LastNameContactPerson { get; set; }
 
-        [Required(ErrorMessage = "Не указан Email")]
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Обязательное поле")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
+        [Display(Name = "Пароль")]
+        [Required(ErrorMessage = "Обязательное поле")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
+        [Display(Name = "Подтверждение пароля")]
+        [Required(ErrorMessage = "Обязательное поле")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "Телефон")]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
+
+        [Display(Name = "Сайт")]
+        public string Site { get; set; }
     }
 }

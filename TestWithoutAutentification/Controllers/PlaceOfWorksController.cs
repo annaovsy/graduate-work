@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestWithoutAutentification.Models;
 using TestWithoutAutentification.Models.AdditionalModels;
+using TestWithoutAutentification.ViewModels;
 
 namespace TestWithoutAutentification.Controllers
 {
     public class PlaceOfWorksController : Controller
     {
         private readonly AppDbContext _context;
+        private ResumeCreateModel _resumeCreateModel { get; set; }
 
         public PlaceOfWorksController(AppDbContext context)
         {
@@ -46,9 +48,11 @@ namespace TestWithoutAutentification.Controllers
         }
 
         // GET: PlaceOfWorks/Create
-        public IActionResult Create()
+        public IActionResult Create(ResumeCreateModel resume)
         {
-           // ViewData["ResumeId"] = new SelectList(_context.Resume, "Id");         
+            // ViewData["ResumeId"] = new SelectList(_context.Resume, "Id");
+            //PlaceOfWork placeOfWork = new PlaceOfWork();
+            _resumeCreateModel = resume;
             return View();
         }
 
@@ -57,13 +61,18 @@ namespace TestWithoutAutentification.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Organization,Position,ResumeId")] PlaceOfWork placeOfWork, List<int> PlasesOfWorkId)
+        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Organization,Position,ResumeId")] PlaceOfWork placeOfWork)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(placeOfWork);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Resumes", placeOfWork);
+                //if(_resumeCreateModel.PlasesOfWorkId == null)
+                //    _resumeCreateModel.PlasesOfWorkId = new List<int>(placeOfWork.Id);                
+                //else
+                //    _resumeCreateModel.PlasesOfWorkId.Add(placeOfWork.Id);
+
+                return RedirectToAction("Create", "Resumes", _resumeCreateModel/*new { placeId = placeOfWork.Id }*/ );
             }
             //ViewData["ResumeId"] = new SelectList(_context.Resume, "Id", "Id", placeOfWork.ResumeId);
             return View(placeOfWork);

@@ -1,0 +1,81 @@
+﻿@model TestWithoutAutentification.Models.Vacancy
+
+@{
+    ViewData["Title"] = "Создание вакансии";
+}
+<nav class="navbar navbar-expand-sm">
+    <div class="container justify-content-end">
+        <partial name="_LoginPartialCompany" />
+    </div>
+</nav>
+
+<h3>Создание вакансии</h3>
+<hr />
+
+<div>
+    <a asp-action="Index">Отмена</a>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="validation text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Position" class="control-label"></label>
+                <input asp-for="Position" class="form-control" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <div class="row">
+                    <div class="col">
+                        <input asp-for="Salary.Amount" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <select asp-for="Salary.CurrencyId" asp-items="ViewBag.Currencies" class="form-control"></select>
+                    </div>
+                </div>
+                <span asp-validation-for="Salary.Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+                <select asp-for="CityId" asp-items="ViewBag.Cities" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Remote" />
+                    @Html.DisplayNameFor(model => model.Remote)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkExperienceId" class="control-label"></label>
+                <select asp-for="WorkExperienceId" asp-items="ViewBag.WorkExperiences" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="WorkExperienceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Requirements" class="control-label"></label>
+                <textarea asp-for="Requirements" rows="8" class="form-control"></textarea>
+                <span asp-validation-for="Requirements" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Conditions" class="control-label"></label>
+                <textarea asp-for="Conditions" rows="8" class="form-control"></textarea>
+                <span asp-validation-for="Conditions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

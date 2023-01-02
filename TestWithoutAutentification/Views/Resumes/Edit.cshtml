@@ -1,18 +1,23 @@
 ﻿@model TestWithoutAutentification.Models.Resume
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменение";
 }
+<nav class="navbar navbar-expand-sm">
+    <div class="container justify-content-end">
+        <partial name="_LoginPartial" />
+    </div>
+</nav>
 
-<h1>Edit</h1>
+<h3>Изменение резюме</h3>
 
-<h4>Resume</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -29,9 +34,41 @@
                 <span asp-validation-for="MobilePhone" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+                <select asp-for="CityId" asp-items="ViewBag.Cities" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
                 <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SexId" class="control-label"></label>
+                @foreach (var item in (SelectList)ViewBag.Sex)
+                {
+                    <br />
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.SexId, item.Value, new { id = "sex" + item.Value, @class = "form-check-input", name = "Sex", @value = item.Value, @text = item.Text })
+                        <label class="control-label form-check-label" for="">@item.Text</label>
+                    </div>
+                }
+                <br />
+                <span asp-validation-for="SexId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CitizenshipsId, new { @class = "control-label" })
+                @Html.ListBoxFor(model => model.CitizenshipsId, ViewBag.Citizenships as MultiSelectList, new { @class = "form-control", multiple = "multiple", @text = "dfsgfdgf", id = "Subjects_dropdown" })
+                <span asp-validation-for="CitizenshipsId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkExperienceId" class="control-label"></label>
+                <select asp-for="WorkExperienceId" asp-items="ViewBag.WorkExperiences" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="WorkExperienceId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Position" class="control-label"></label>
@@ -39,41 +76,58 @@
                 <span asp-validation-for="Position" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <div class="row">
+                    <div class="col">
+                        <input asp-for="Salary.Amount" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <select asp-for="Salary.CurrencyId" asp-items="ViewBag.Currencies" class="form-control"></select>
+                    </div>
+                </div>
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Места работы</label>
+                <button type="button" class="btn btn-primary form-control" data-toggle="ajax-modal" data-bind="Model" data-target="#addPlaceOfWork"
+                        data-url="@Url.Action("CreatePlacesOfWork", "Resumes")">
+                    Добавить место работы
+                </button>
+            </div>
+            <div class="form-group">
                 <label asp-for="AboutMyself" class="control-label"></label>
-                <input asp-for="AboutMyself" class="form-control" />
+                <textarea asp-for="AboutMyself" rows="5" class="form-control"></textarea>
                 <span asp-validation-for="AboutMyself" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="CitizenshipId" class="control-label"></label>
-                <input asp-for="CitizenshipId" class="form-control" />
-                <span asp-validation-for="CitizenshipId" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="EducationLevelId" class="control-label"></label>
+                <select asp-for="EducationLevelId" asp-items="ViewBag.EducationLevels" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="EducationLevelId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PlaceOfWorkId" class="control-label"></label>
-                <input asp-for="PlaceOfWorkId" class="form-control" />
-                <span asp-validation-for="PlaceOfWorkId" class="text-danger"></span>
+
             </div>
             <div class="form-group">
-                <label asp-for="EducationalInstitutionId" class="control-label"></label>
-                <input asp-for="EducationalInstitutionId" class="form-control" />
-                <span asp-validation-for="EducationalInstitutionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ForeignLanguageId" class="control-label"></label>
-                <input asp-for="ForeignLanguageId" class="form-control" />
-                <span asp-validation-for="ForeignLanguageId" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить изменения" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-route-id="@Model.Id">Отмена</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+            $('#Subjects_dropdown').multiselect();
+        });
+    </script>
 }

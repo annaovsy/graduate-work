@@ -1,13 +1,43 @@
-﻿@{
-    ViewData["Title"] = "HCompany Page";
+﻿@model IEnumerable<TestWithoutAutentification.Models.Resume>
+@*Главный список резюме*@
+@{
+    ViewData["Title"] = "Работодателям";
 }
+
 <nav class="navbar navbar-expand-sm">
     <div class="container justify-content-end">
         <partial name="_LoginPartialCompany" />
     </div>
 </nav>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Company Page!!!</h1>
-    <p>Welcome to Company PAge!!!</p>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
 </div>
+
+@foreach (var item in Model)
+{
+    <div id="list-main">
+        <div class="listContainer">
+            <div class="list-title">
+                <a asp-action="ShowResume" asp-controller="Resumes" asp-route-id="@item.Id">@item.Position</a> @*добавить страницу просмотра резюме*@
+            </div>
+            Возраст @item.Age<br />
+
+            <span class="font-weight-bold">
+                @item.Salary.Amount @item.Salary.Currency.Name
+            </span>
+            <div>
+                <span class="list-description">Опыт</span><br />
+                @item.WorkExperience.Name
+            </div>
+            <div>
+                <span class="list-description">Образование</span><br />
+                @item.EducationLevel.Name
+            </div>
+            <div class="align-bottom">
+                <input type="button" class="btn btn-primary compItem" data-url="@Url.Action("GetPartialMail", "CompanyHome", new { id = item.Id })" value="Связаться" />
+            </div>
+        </div>
+    </div>
+}
+

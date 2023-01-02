@@ -1,39 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestWithoutAutentification.Models;
-using TestWithoutAutentification.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
 using TestWithoutAutentification.Models.AdditionalModels;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace TestWithoutAutentification.Controllers
 {
+    [Authorize]
     public class ResumesController : Controller
     {
         private readonly AppDbContext _context;
-        private List<int> items = new List<int>();
+        SelectList cities;
+        SelectList sex;
+        MultiSelectList citizenship;
+        SelectList experience;
+        SelectList currency;
+        SelectList educationLevel;
+        SelectList language;
+        SelectList languageLevel;
 
         public ResumesController(AppDbContext context)
         {
             _context = context;
-            // _user = user;
+
+            cities = new SelectList(_context.City, "Id", "Name"); 
+            sex = new SelectList(_context.Sex, "Id", "Name");
+            citizenship = new MultiSelectList(_context.Citizenship, "Id", "Name");
+            experience = new SelectList(_context.WorkExperience, "Id", "Name");
+            currency = new SelectList(_context.Currency, "Id", "Name");
+            educationLevel = new SelectList(_context.EducationLevel, "Id", "Name");
+            language = new SelectList(_context.Language, "Id", "Name");
+            languageLevel = new SelectList(_context.LanguageLevel, "Id", "Name");
         }
 
         // get: resumes
         public async Task<IActionResult> Index()
         {
+          
             var resume = _context.Resume.Include(x => x.City)
                                         .Include(x => x.Sex)
                                         .Include(x => x.Citizenships)
                                         .Include(x => x.WorkExperience)
-                                        .Include(x => x.Salary.Currency).ToListAsync();
+                                        .Include(x => x.Salary.Currency)
+                                        .Include(x => x.EducationLevel).ToListAsync();
             return View(await resume);
             //return view(await _context.resume.tolistasync());
         }
@@ -47,6 +60,12 @@ namespace TestWithoutAutentification.Controllers
             }
 
             var resume = await _context.Resume
+                .Include(x => x.City)
+                .Include(x => x.Sex)
+                .Include(x => x.Citizenships)
+                .Include(x => x.WorkExperience)
+                .Include(x => x.Salary.Currency)
+                .Include(x => x.EducationLevel)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (resume == null)
             {
@@ -57,94 +76,115 @@ namespace TestWithoutAutentification.Controllers
         }
 
         // get: resumes/create
-        public IActionResult Create(PlaceOfWork placeOfWork)
+        public IActionResult Create()
         {
-            SelectList cities = new SelectList(_context.City, "Id", "Name");
+            var user = _context.Users.Include(u => u.Resume).FirstOrDefault(elem => elem.Email == User.Identity.Name);
+            if (user.Resume != null)
+                return RedirectToAction("Details", "Resumes", new { user.Resume.Id });
+
             ViewBag.Cities = cities;
-
-            SelectList sex = new SelectList(_context.Sex, "Id", "Name");
             ViewBag.Sex = sex;
-
-            MultiSelectList citizenship = new MultiSelectList(_context.Citizenship, "Id", "Name");
             ViewBag.Citizenships = citizenship;
-
-            SelectList experience = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.WorkExperiences = experience;
-
-            SelectList currency = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.Currencies = currency;
-
-            //SelectList plaseOfWork = new SelectList(_context.PlaceOfWork, "Id");
-            //ViewBag.PlaceOfWork = placeOfWork.Id;
-            // ViewBag.PlaceOfWork = PlasesOfWorkId;
-            items.Add(placeOfWork.Id);            
-            ViewBag.PlaceOfWorkId = items;
+            ViewBag.EducationLevels = educationLevel;
+            ViewBag.Languages = language;
+            ViewBag.LanguageLevels = languageLevel;
 
             return View();
         }
 
+        [HttpPost]
+        public IActionResult CreatePlacesOfWork(PlaceOfWork placeOfWork)
+        {
+                _context.PlaceOfWork.Add(placeOfWork);
+                _context.SaveChanges();
+               // places.Add(new PlaceOfWork());
+                //if(_resumeCreateModel.PlasesOfWorkId == null)
+                //    _resumeCreateModel.PlasesOfWorkId = new List<int>(placeOfWork.Id);                
+                //else
+                //    _resumeCreateModel.PlasesOfWorkId.Add(placeOfWork.Id);
+
+                //return RedirectToAction("Create", "Resumes");
+                // return Content(placeOfWork.Organization);
+                //return LocalRedirect("/Create/Resumes");
+           
+            return PartialView("_CreatePlacesOfWork", placeOfWork);
+        }
+
+       
         // post: resumes/create
         // to protect from overposting attacks, enable the specific properties you want to bind to.
         // for more details, see http://go.microsoft.com/fwlink/?linkid=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(/*[bind("id,firstname,lastname,mobilephone,dateofbirth,position,aboutmyself,citizenshipid,placeofworkid,educationalinstitutionid,foreignlanguageid")]*/ ResumeCreateModel model)
+        public async Task<IActionResult> Create(Resume resume)
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Users.FirstOrDefault(u => u.Email == "ane4ka.sax@mail.ru");
-                                
-                var salary = new Salary { Amount = model.Salary, CurrencyId = model.CurrencyId };
-                if(salary == null)
-                    return View(model);
-                else
-                    _context.Salary.Add(salary);
-                
-                // добавляем резюме в бд
-                Resume resume = new Resume
+                foreach (var item in resume.CitizenshipsId)
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    MobilePhone = model.MobilePhone,
-                    CityId = model.CityId,
-                    SexId = model.SexId,
-                    DateOfBirth = model.DateOfBirth,
-                    WorkExperienceId = model.WorkExperienceId,
-                    Position = model.Position,
-                    Salary = salary,
-                    AboutMyself = model.AboutMyself,
-                    User = user
-                };
-                foreach (var id in model.CitizenshipsId)
-                {
-                    Citizenship citizenship = _context.Citizenship.FirstOrDefault(u => u.Id == id);
+                    Citizenship citizenship = _context.Citizenship.FirstOrDefault(elem => elem.Id == item);
                     resume.Citizenships.Add(citizenship);
                 }
-                if(model.PlasesOfWorkId != null)
-                {
-                    foreach (var id in model.PlasesOfWorkId)
-                    {
-                        PlaceOfWork placeOfWork = _context.PlaceOfWork.FirstOrDefault(u => u.Id == id);
-                        resume.PlacesOfWork.Add(placeOfWork);
-                    }
-                }
-              
+                
+                resume.User = _context.Users.FirstOrDefault(elem => elem.Email == User.Identity.Name);
+
+                // добавляем резюме в бд
+                //Resume resume = new Resume
+                //{
+                //    FirstName = model.FirstName,
+                //    LastName = model.LastName,
+                //    MobilePhone = model.MobilePhone,
+                //    CityId = model.City.Id,
+                //    SexId = model.Sex.Id,
+                //    DateOfBirth = model.DateOfBirth,
+                //    WorkExperienceId = model.WorkExperience.Id,
+                //    EducationLevelId = model.EducationLevel.Id,
+                //    Position = model.Position,
+                //    Salary = model.Salary,
+                //    AboutMyself = model.AboutMyself
+                //};
+                //foreach (var item in model.CitizenshipsId)
+                //{
+                //    Citizenship citizenship = _context.Citizenship.FirstOrDefault(elem => elem.Id == item);
+                //    resume.Citizenships.Add(citizenship);
+                //}
+                //resume.User = _context.Users.FirstOrDefault(elem => elem.Email == User.Identity.Name);
+
+
                 _context.Resume.Add(resume);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
-            return View(model);
+            return View(resume);
         }
 
         // get: resumes/edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.Cities = cities;
+            ViewBag.Sex = sex;
+            ViewBag.Citizenships = citizenship;
+            ViewBag.WorkExperiences = experience;
+            ViewBag.Currencies = currency;
+            ViewBag.EducationLevels = educationLevel;
+            ViewBag.Languages = language;
+            ViewBag.LanguageLevels = languageLevel;
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var resume = await _context.Resume.FindAsync(id);
+            var resume = await _context.Resume.Include(x => x.City)
+                                        .Include(x => x.Sex)
+                                        .Include(x => x.Citizenships)
+                                        .Include(x => x.WorkExperience)
+                                        .Include(x => x.Salary.Currency)
+                                        .Include(x => x.EducationLevel)
+                                        .Include(x => x.User)
+                                        .FirstOrDefaultAsync(v => v.Id == id);
             if (resume == null)
             {
                 return NotFound();
@@ -157,7 +197,7 @@ namespace TestWithoutAutentification.Controllers
         // for more details, see http://go.microsoft.com/fwlink/?linkid=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, /*[bind("id,firstname,lastname,mobilephone,dateofbirth,position,aboutmyself,citizenshipid,placeofworkid,educationalinstitutionid,foreignlanguageid")]*/ Resume resume)
+        public async Task<IActionResult> Edit(int id, Resume resume)
         {
             if (id != resume.Id)
             {
@@ -182,7 +222,7 @@ namespace TestWithoutAutentification.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(resume);
         }
@@ -213,12 +253,35 @@ namespace TestWithoutAutentification.Controllers
             var resume = await _context.Resume.FindAsync(id);
             _context.Resume.Remove(resume);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         private bool ResumeExists(int id)
         {
             return _context.Resume.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> ShowResume(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var resume = await _context.Resume
+                .Include(x => x.City)
+                .Include(x => x.Sex)
+                .Include(x => x.Citizenships)
+                .Include(x => x.WorkExperience)
+                .Include(x => x.Salary.Currency)
+                .Include(x => x.EducationLevel)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (resume == null)
+            {
+                return NotFound();
+            }
+
+            return View(resume);
         }
     }
 }

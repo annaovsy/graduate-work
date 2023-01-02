@@ -1,29 +1,35 @@
 ﻿@model IEnumerable<TestWithoutAutentification.Models.Vacancy>
-@*Главный список вакансий*@
+@*Просмотр списка СВОИХ вакансий Компанией*@
 @{
-    ViewData["Title"] = "Соискателям";
+    ViewData["Title"] = "Index";
 }
+
 <nav class="navbar navbar-expand-sm">
     <div class="container justify-content-end">
-        <partial name="_LoginPartial" />
+        <partial name="_LoginPartialCompany" />
     </div>
 </nav>
 
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
+<form asp-action="Create" asp-controller="Vacancies" method="get">
+    <button class="btn btn-primary">
+        Создать вакансию
+    </button>
+</form>
 @foreach (var item in Model)
 {
 <div id="list-main">
     <div class="listContainer">
         <div class="list-title">
-            <a asp-action="ShowVacancy" asp-controller="Vacancies" asp-route-id="@item.Id">@item.Position</a> @*добавить страницу просмотра вакансии*@
+            <a asp-action="Details" asp-controller="Vacancies" asp-route-id="@item.Id">@item.Position</a>
         </div>
         <span class="font-weight-bold">@item.Salary.Amount @item.Salary.Currency.Name</span>
         <div>
             <span class="list-description">О компании</span><br />
             <a href="@item.Company.Site">@item.Company.Name</a> <br />
-            @if(item.CityId != null)
+            @if (item.CityId != null)
             {
                 <span>г. @item.City.Name</span>
             }
@@ -39,11 +45,7 @@
                 @item.WorkExperience.Name
             </div>
         }
-        <div class="align-bottom">
-            <input type="button" class="btn btn-primary compItem" data-url="@Url.Action("GetPartialMail", "CompanyHome", new { id = item.Id })" value="Связаться" />
-        </div>
     </div>
 </div>
 }
-
 

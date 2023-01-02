@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213094428_idadd")]
+    partial class idadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,9 +304,6 @@ namespace TestWithoutAutentification.Migrations
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Site")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
@@ -323,45 +322,36 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CityId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("EducationLevelId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MobilePhone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SalaryId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("SexId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int?>("WorkExperienceId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -371,7 +361,8 @@ namespace TestWithoutAutentification.Migrations
                     b.HasIndex("EducationLevelId");
 
                     b.HasIndex("SalaryId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[SalaryId] IS NOT NULL");
 
                     b.HasIndex("SexId");
 
@@ -435,59 +426,6 @@ namespace TestWithoutAutentification.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("TestWithoutAutentification.Models.Vacancy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Conditions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Remote")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Requirements")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SalaryId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WorkExperienceId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("SalaryId")
-                        .IsUnique();
-
-                    b.HasIndex("WorkExperienceId");
-
-                    b.ToTable("Vacancy");
                 });
 
             modelBuilder.Entity("CitizenshipResume", b =>
@@ -583,27 +521,19 @@ namespace TestWithoutAutentification.Migrations
                 {
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.City", "City")
                         .WithMany("Resumes")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityId");
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.EducationLevel", "EducationLevel")
                         .WithMany("Resumes")
-                        .HasForeignKey("EducationLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EducationLevelId");
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Salary", "Salary")
                         .WithOne("Resume")
-                        .HasForeignKey("TestWithoutAutentification.Models.Resume", "SalaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TestWithoutAutentification.Models.Resume", "SalaryId");
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Sex", "Sex")
                         .WithMany("Resumes")
-                        .HasForeignKey("SexId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SexId");
 
                     b.HasOne("TestWithoutAutentification.Models.User", "User")
                         .WithOne("Resume")
@@ -611,9 +541,7 @@ namespace TestWithoutAutentification.Migrations
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.WorkExperience", "WorkExperience")
                         .WithMany("Resumes")
-                        .HasForeignKey("WorkExperienceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WorkExperienceId");
 
                     b.Navigation("City");
 
@@ -637,42 +565,9 @@ namespace TestWithoutAutentification.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TestWithoutAutentification.Models.Vacancy", b =>
-                {
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.City", "City")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("CityId");
-
-                    b.HasOne("TestWithoutAutentification.Models.Company", "Company")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Salary", "Salary")
-                        .WithOne("Vacancy")
-                        .HasForeignKey("TestWithoutAutentification.Models.Vacancy", "SalaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.WorkExperience", "WorkExperience")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("WorkExperienceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("City");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Salary");
-
-                    b.Navigation("WorkExperience");
-                });
-
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.City", b =>
                 {
                     b.Navigation("Resumes");
-
-                    b.Navigation("Vacancies");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Currency", b =>
@@ -698,8 +593,6 @@ namespace TestWithoutAutentification.Migrations
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Salary", b =>
                 {
                     b.Navigation("Resume");
-
-                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Sex", b =>
@@ -710,13 +603,6 @@ namespace TestWithoutAutentification.Migrations
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.WorkExperience", b =>
                 {
                     b.Navigation("Resumes");
-
-                    b.Navigation("Vacancies");
-                });
-
-            modelBuilder.Entity("TestWithoutAutentification.Models.Company", b =>
-                {
-                    b.Navigation("Vacancies");
                 });
 
             modelBuilder.Entity("TestWithoutAutentification.Models.Resume", b =>

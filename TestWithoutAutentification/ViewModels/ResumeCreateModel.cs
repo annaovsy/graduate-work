@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TestWithoutAutentification.Models;
 using TestWithoutAutentification.Models.AdditionalModels;
 
 namespace TestWithoutAutentification.ViewModels
@@ -24,7 +25,7 @@ namespace TestWithoutAutentification.ViewModels
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Город проживания")]
-        public int CityId { get; set; }
+        public City City { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Дата рождения")]
@@ -34,15 +35,15 @@ namespace TestWithoutAutentification.ViewModels
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Пол")]
-        public int SexId { get; set; }
+        public Sex Sex { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Гражданство")]
-        public List<int> CitizenshipsId { get; set; }
+        public List<int> Citizenships { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Опыт работы")]
-        public int WorkExperienceId { get; set; }
+        public WorkExperience WorkExperience { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Желаемая должность")]
@@ -50,14 +51,22 @@ namespace TestWithoutAutentification.ViewModels
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Зарплата")]
-        public int Salary { get; set; }
-        public int CurrencyId { get; set; }
+        public Salary Salary { get; set; }
 
-        [Display(Name = "Места работы")]
-        public List<int> PlasesOfWorkId { get; set; }
+        //[Display(Name = "Места работы")]
+        //public List<int> PlasesOfWorkId { get; set; } = new List<int>();
 
         [Display(Name = "О себе")]
         [DataType(DataType.MultilineText)]
         public string AboutMyself { get; set; }
+
+        [Required(ErrorMessage = "Обязательное поле")]
+        [Display(Name = "Уроень образования")]
+        public EducationLevel EducationLevel { get; set; }
+
+        [Display(Name = "Иностранные языки")]
+        public ForeignLanguage ForeignLanguageee { get; set; }
+        public List<ForeignLanguage> ForeignLanguages { get; set; }
+
     }
 }

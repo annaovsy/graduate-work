@@ -1,16 +1,14 @@
-﻿
-@if (User.Identity.IsAuthenticated && User.IsInRole("user"))
+﻿@if (User.Identity.IsAuthenticated && User.IsInRole("user"))
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
-
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right mb-4">                
             <li>
-                @Html.ActionLink("Создать резюме", "Create", "Resumes", routeValues: null)
+                @Html.ActionLink("Резюме", "Create", "Resumes")
             </li>
             <li>
-                @Html.ActionLink(User.Identity.Name, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Личный кабинет" })
+                @Html.ActionLink(User.Claims.FirstOrDefault(c => c.Type == "userName").Value.ToString(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Личный кабинет" })
             </li>
             <li>
                 @Html.ActionLink("Выйти", "Logout", "Account", routeValues: null, htmlAttributes: new { id = "logoutLink" })
@@ -20,8 +18,8 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Регистрация", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Выполнить вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+<ul class="nav navbar-nav navbar-right mb-4">
+    <li>@Html.ActionLink("Регистрация", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <li>@Html.ActionLink("Выполнить вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+</ul>
 }

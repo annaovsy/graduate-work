@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestWithoutAutentification.Controllers;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification
@@ -34,8 +35,8 @@ namespace TestWithoutAutentification
                 .AddCookie(options =>
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
-           // services.AddSingleton<User>();
             services.AddControllersWithViews();
         }
 

@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Index";
 }
+<nav class="navbar navbar-expand-sm">
+    <div class="container justify-content-end">
+        <partial name="_LoginPartial" />
+    </div>
+</nav>
 
-<h1>Index</h1>
+<h1>Ваше резюме</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -41,6 +43,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EducationLevel)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AboutMyself)
@@ -88,8 +93,12 @@
                 @Html.DisplayFor(modelItem => item.Salary.Currency.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.EducationLevel.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.AboutMyself)
             </td>
+
             @*<td>
             @Html.DisplayFor(modelItem => item.PlaceOfWorkId)
         </td>

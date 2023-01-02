@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221227134413_Vacancy")]
+    partial class Vacancy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,7 +471,6 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SalaryId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("WorkExperienceId")
@@ -483,7 +484,8 @@ namespace TestWithoutAutentification.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("SalaryId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[SalaryId] IS NOT NULL");
 
                     b.HasIndex("WorkExperienceId");
 
@@ -649,9 +651,7 @@ namespace TestWithoutAutentification.Migrations
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Salary", "Salary")
                         .WithOne("Vacancy")
-                        .HasForeignKey("TestWithoutAutentification.Models.Vacancy", "SalaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TestWithoutAutentification.Models.Vacancy", "SalaryId");
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.WorkExperience", "WorkExperience")
                         .WithMany("Vacancies")

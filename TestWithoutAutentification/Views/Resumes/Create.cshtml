@@ -1,13 +1,18 @@
-﻿@model TestWithoutAutentification.ViewModels.ResumeCreateModel
+﻿@model TestWithoutAutentification.Models.Resume
+@using TestWithoutAutentification.Models.AdditionalModels
+@*Создание резюме*@
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Создание резюме";
 }
+<nav class="navbar navbar-expand-sm">
+    <div class="container justify-content-end">
+        <partial name="_LoginPartial" />
+    </div>
+</nav>
 
-@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
-<script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.js"></script>*@
-
-<h3>Ваше резюме</h3>
+<div id="PlaceHolder"></div>
+<h3>Создание резюме</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -34,10 +39,6 @@
                     <option selected disabled> </option>
                 </select>
                 <span asp-validation-for="CityId" class="text-danger"></span>
-
-                @*@Html.LabelFor(model => model.City, new { @class = "control-label" })
-            @Html.DropDownListFor(m => m.City, ViewBag.Cities as SelectList, "Выберите город", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.City)*@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
@@ -49,15 +50,19 @@
                 @foreach (var item in (SelectList)ViewBag.Sex)
                 {
                     <br />
-                    @Html.RadioButtonFor(m => m.SexId, item.Value, new { id = "sex" + item.Value, name = "Sex", @value = item.Value, @text = item.Text })
-                    <label class="control-label">@item.Text</label>
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.SexId, item.Value, new { id = "sex" + item.Value, @class = "form-check-input", name = "Sex", @value = item.Value, @text = item.Text })
+                        <label class="control-label form-check-label" for="">@item.Text</label>
+                    </div>
                 }
                 <br />
                 <span asp-validation-for="SexId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.CitizenshipsId, new { @class = "control-label" })
+
                 @Html.ListBoxFor(model => model.CitizenshipsId, ViewBag.Citizenships as MultiSelectList, new { @class = "form-control", multiple = "multiple", @text = "dfsgfdgf", id = "Subjects_dropdown" })
+
                 <span asp-validation-for="CitizenshipsId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -76,80 +81,63 @@
                 <label asp-for="Salary" class="control-label"></label>
                 <div class="row">
                     <div class="col">
-                        <input asp-for="Salary" class="form-control" />
+                        <input asp-for="Salary.Amount" class="form-control" />
                     </div>
                     <div class="col">
-                        <select asp-for="CurrencyId" asp-items="ViewBag.Currencies" class="form-control"></select>
+                        <select asp-for="Salary.CurrencyId" asp-items="ViewBag.Currencies" class="form-control"></select>
                     </div>
                 </div>
-                <span asp-validation-for="Salary" class="text-danger"></span>
+                <span asp-validation-for="Salary.Amount" class="text-danger"></span>
             </div>
 
             <div class="form-group">
+                <label class="control-label">Места работы</label>
+                <button type="button" class="btn btn-primary form-control" data-toggle="ajax-modal" data-bind="Model" data-target="#addPlaceOfWork"
+                        data-url="@Url.Action("CreatePlacesOfWork", "Resumes")">
+                    Добавить место работы
+                </button>
+            </div>
+            <div class="form-group">
                 <label asp-for="AboutMyself" class="control-label"></label>
-                @Html.TextAreaFor(m => m.AboutMyself, 5, 40, new { @class = "form-control" })
+                <textarea asp-for="AboutMyself" rows="5" class="form-control"></textarea>
                 <span asp-validation-for="AboutMyself" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PlasesOfWorkId" class="control-label"></label>
-                <input asp-for="PlasesOfWorkId" type="button" value="Добавить место работы" class="btn btn-primary form-control"
-                       onclick="location.href='@Url.Action("Create", "PlaceOfWorks")'" />
-                @foreach (var item in ViewBag.PlaceOfWorkId as List<int>)
-                {
-                    <label class="control-label">@item.ToString()</label>
-                    @*<label asp-for="PlasesOfWorkId.Add(item)" class="control-label"></label>*@
-                }
+                <label asp-for="EducationLevelId" class="control-label"></label>
+                <select asp-for="EducationLevelId" asp-items="ViewBag.EducationLevels" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="EducationLevelId" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-            <label asp-for="AboutMyself" class="control-label"></label>
-            <textarea asp-for="AboutMyself" rows="5" class="form-control" />
-            <span asp-validation-for="AboutMyself" class="text-danger"></span>
-        </div>*@
-            @*<div class="form-group">
-            <label asp-for="Position" class="control-label"></label>
-            <input asp-for="Position" class="form-control" />
-            <span asp-validation-for="Position" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="AboutMyself" class="control-label"></label>
-            <input asp-for="AboutMyself" class="form-control" />
-            <span asp-validation-for="AboutMyself" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="PlaceOfWorkId" class="control-label"></label>
-            <input asp-for="PlaceOfWorkId" class="form-control" />
-            <span asp-validation-for="PlaceOfWorkId" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="EducationalInstitutionId" class="control-label"></label>
-            <input asp-for="EducationalInstitutionId" class="form-control" />
-            <span asp-validation-for="EducationalInstitutionId" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ForeignLanguageId" class="control-label"></label>
-            <input asp-for="ForeignLanguageId" class="form-control" />
-            <span asp-validation-for="ForeignLanguageId" class="text-danger"></span>
-        </div>>*@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-
         $(document).ready(function () {
             $('#Subjects_dropdown').multiselect();
         });
     </script>
+    @*<script>
+            $(function () {
+                $.ajaxSetup({ cache: false });
+                $("#addPlaceOfWork").click(function (e) {
 
+                    e.preventDefault();
+                    $.get(this.href, function (data) {
+                        $('#dialogContent').html(data);
+                        $('#modDialog').modal('show');
+                    });
+                });
+            })
+        </script>*@
 }
