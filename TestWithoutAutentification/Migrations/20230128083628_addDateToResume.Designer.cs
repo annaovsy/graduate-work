@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230128083628_addDateToResume")]
+    partial class addDateToResume
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,7 +336,6 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("SpecializationId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("UserId")
@@ -573,10 +574,8 @@ namespace TestWithoutAutentification.Migrations
                         .IsRequired();
 
                     b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Specialization", "Specialization")
-                        .WithMany("Resumes")
-                        .HasForeignKey("SpecializationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("SpecializationId");
 
                     b.HasOne("TestWithoutAutentification.Models.User", "User")
                         .WithOne("Resume")
@@ -699,8 +698,6 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Specialization", b =>
                 {
-                    b.Navigation("Resumes");
-
                     b.Navigation("Vacancies");
                 });
 

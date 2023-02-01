@@ -17,6 +17,11 @@ namespace TestWithoutAutentification.Models
         public string Position { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
+        [Display(Name = "Специализация")]
+        public Specialization Specialization { get; set; }
+        public int? SpecializationId { get; set; }
+
+        [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Зарплата")]
         public Salary Salary { get; set; }
         public int? SalaryId { get; set; }
@@ -43,6 +48,8 @@ namespace TestWithoutAutentification.Models
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Условия работы")]
         public string Conditions { get; set; }
+
+        public DateTime CreationDate { get; set; }
 
         public int? CompanyId { get; set; }
         public Company Company { get; set; }

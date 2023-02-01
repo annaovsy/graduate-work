@@ -14,10 +14,35 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Uno.WinUI" Version="4.6.39" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ViewModels\AdditionalViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230120121937_AddSpecialization.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230120121937_AddSpecialization.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230120123922_specializationAdd.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230120123922_specializationAdd.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230128083449_addDateToResume.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230128083449_addDateToResume.Designer.cs" />
   </ItemGroup>
 
 </Project>

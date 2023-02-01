@@ -11,7 +11,6 @@ namespace TestWithoutAutentification.Models
         public DbSet<Resume> Resume { get; set; }
         public DbSet<Vacancy> Vacancy { get; set; }
 
-        public DbSet<Citizenship> Citizenship { get; set; }
         public DbSet<City> City { get; set; }
         public DbSet<Currency> Currency { get; set; }
         public DbSet<EducationalInstitution> EducationalInstitution { get; set; }
@@ -23,6 +22,7 @@ namespace TestWithoutAutentification.Models
         public DbSet<Salary> Salary { get; set; }
         public DbSet<Sex> Sex { get; set; }
         public DbSet<WorkExperience> WorkExperience { get; set; }
+        public DbSet<Specialization> Specialization { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

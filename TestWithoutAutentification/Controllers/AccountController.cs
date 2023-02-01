@@ -8,7 +8,8 @@ using System.Security.Claims;
 using TestWithoutAutentification.ViewModels; // пространство имен моделей RegisterModel и LoginModel
 using TestWithoutAutentification.Models; // пространство имен UserContext и класса User
 using System;
-using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace TestWithoutAutentification.Controllers
 {
@@ -35,17 +36,19 @@ namespace TestWithoutAutentification.Controllers
             {
                 User user = await db.Users
                     .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == HashPassword(model.Password));
                 if (user != null)
-                {       
-                    await Authenticate(user.Email, user.Role.Name, user.Name);
+                {
+                    //DisplayNoWifiDialog();
+                    await Authenticate(user.Email, user.Role.Name, user.Name);                    
+
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
-
+    
         [HttpGet]
         public IActionResult Register()
         {
@@ -61,7 +64,7 @@ namespace TestWithoutAutentification.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    user = new User { Name = model.Name, Email = model.Email, Password = model.Password };
+                    user = new User { Name = model.Name, Email = model.Email, Password = HashPassword(model.Password)};
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
                         user.Role = userRole;
@@ -71,7 +74,7 @@ namespace TestWithoutAutentification.Controllers
                     await db.SaveChangesAsync();
 
                     await Authenticate(user.Email, user.Role.Name, user.Name); // аутентификация
-
+                    
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Данный Email зарегистрирован в системе");
@@ -102,7 +105,7 @@ namespace TestWithoutAutentification.Controllers
             {
                 Company company = await db.Companies
                     .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == HashPassword(model.Password));
                 if (company != null)
                 {
                     await Authenticate(company.Email, company.Role.Name, company.Name);
@@ -135,7 +138,7 @@ namespace TestWithoutAutentification.Controllers
                         FirstNameContactPerson = model.FirstNameContactPerson,
                         LastNameContactPerson = model.LastNameContactPerson,
                         Email = model.Email,
-                        Password = model.Password,
+                        Password = HashPassword(model.Password),
                         Phone = model.Phone,
                         Site = model.Site
                     };
@@ -177,6 +180,23 @@ namespace TestWithoutAutentification.Controllers
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             // установка аутентификационных куки
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        public static string HashPassword(string password)
+        { 
+            //почитать про MD5
+            MD5 mD5 = MD5.Create();
+
+            byte[] b = Encoding.ASCII.GetBytes(password);
+            byte[] hash = mD5.ComputeHash(b);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach(var symbol in hash)
+            {
+                stringBuilder.Append(symbol.ToString("X2"));
+            }
+
+            return Convert.ToString(stringBuilder);
         }
     }
     

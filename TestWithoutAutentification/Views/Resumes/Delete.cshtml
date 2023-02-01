@@ -1,19 +1,21 @@
 ﻿@model TestWithoutAutentification.Models.Resume
 
-@{
-    ViewData["Title"] = "Удаление";
+@{ 
+    Layout = null;
 }
-<nav class="navbar navbar-expand-sm">
-    <div class="container justify-content-end">
-        <partial name="_LoginPartial" />
-    </div>
-</nav>
 
-<h3>Вы уверены, что хотите удалить резюме?</h3>
-<div>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Удалить" class="btn btn-danger" /> |
-        <a asp-action="Details">Вернуться к резюме</a>
-    </form>
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Вы уверены что хотите удалить резюме?</h4>
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </a>
+    </div>
+    <div class="modal-body">
+        <form asp-action="Delete" class="modalForm">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Удалить" class="btn btn-danger" />
+            <a type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="color:white;">Отмена</a>
+        </form>
+    </div>
 </div>

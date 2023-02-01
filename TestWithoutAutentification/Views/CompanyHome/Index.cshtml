@@ -10,9 +10,16 @@
     </div>
 </nav>
 
-<div id="modDialog" class="modal fade">
-    <div id="dialogContent" class="modal-dialog"></div>
-</div>
+<form asp-controller="CompanyHome" asp-action="Index" class="formSearch">
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <input type="text" name="SearchString" placeholder="Поиск по резюме" class="form-control" />
+        </div>
+        <div class="col-sm-2 pl-0">
+            <input type="submit" value="Найти" class="form-control btn btn-light" style="border-color: #DADADA; " />
+        </div>
+    </div>
+</form>
 
 @foreach (var item in Model)
 {

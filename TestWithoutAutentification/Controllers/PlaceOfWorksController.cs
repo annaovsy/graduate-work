@@ -14,7 +14,6 @@ namespace TestWithoutAutentification.Controllers
     public class PlaceOfWorksController : Controller
     {
         private readonly AppDbContext _context;
-        private ResumeCreateModel _resumeCreateModel { get; set; }
 
         public PlaceOfWorksController(AppDbContext context)
         {
@@ -48,11 +47,11 @@ namespace TestWithoutAutentification.Controllers
         }
 
         // GET: PlaceOfWorks/Create
-        public IActionResult Create(ResumeCreateModel resume)
+        public IActionResult Create(Resume resume)
         {
             // ViewData["ResumeId"] = new SelectList(_context.Resume, "Id");
             //PlaceOfWork placeOfWork = new PlaceOfWork();
-            _resumeCreateModel = resume;
+            //_resumeCreateModel = resume;
             return View();
         }
 
@@ -72,7 +71,7 @@ namespace TestWithoutAutentification.Controllers
                 //else
                 //    _resumeCreateModel.PlasesOfWorkId.Add(placeOfWork.Id);
 
-                return RedirectToAction("Create", "Resumes", _resumeCreateModel/*new { placeId = placeOfWork.Id }*/ );
+                return RedirectToAction("Create", "Resumes");
             }
             //ViewData["ResumeId"] = new SelectList(_context.Resume, "Id", "Id", placeOfWork.ResumeId);
             return View(placeOfWork);

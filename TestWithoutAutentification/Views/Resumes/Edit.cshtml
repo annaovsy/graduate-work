@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MobilePhone" class="control-label"></label>
-                <input asp-for="MobilePhone" class="form-control" />
+                <input asp-for="MobilePhone" class="form-control phone" placeholder="+7" />
                 <span asp-validation-for="MobilePhone" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -59,16 +59,18 @@
                 <span asp-validation-for="SexId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.CitizenshipsId, new { @class = "control-label" })
-                @Html.ListBoxFor(model => model.CitizenshipsId, ViewBag.Citizenships as MultiSelectList, new { @class = "form-control", multiple = "multiple", @text = "dfsgfdgf", id = "Subjects_dropdown" })
-                <span asp-validation-for="CitizenshipsId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="WorkExperienceId" class="control-label"></label>
                 <select asp-for="WorkExperienceId" asp-items="ViewBag.WorkExperiences" class="form-control">
                     <option selected disabled> </option>
                 </select>
                 <span asp-validation-for="WorkExperienceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecializationId" class="control-label"></label>
+                <select asp-for="SpecializationId" asp-items="ViewBag.Specializations" class="form-control">
+                    <option selected disabled> </option>
+                </select>
+                <span asp-validation-for="SpecializationId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Position" class="control-label"></label>

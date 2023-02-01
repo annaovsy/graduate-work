@@ -20,6 +20,7 @@ namespace TestWithoutAutentification.Models
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Мобильный телефон")]
+        [DataType(DataType.PhoneNumber)]
         public string MobilePhone { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
@@ -39,11 +40,6 @@ namespace TestWithoutAutentification.Models
         public Sex Sex { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Гражданство")]
-        [NotMapped]
-        public List<int> CitizenshipsId { get; set; } = new();
-
-        [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Опыт работы")]
         public int? WorkExperienceId { get; set; }
         public WorkExperience WorkExperience { get; set; }
@@ -51,6 +47,11 @@ namespace TestWithoutAutentification.Models
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Желаемая должность")]
         public string Position { get; set; }
+
+        [Required(ErrorMessage = "Обязательное поле")]
+        [Display(Name = "Специализация")]
+        public int? SpecializationId { get; set; }
+        public Specialization Specialization { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Зарплата")]
@@ -66,9 +67,9 @@ namespace TestWithoutAutentification.Models
         public int? EducationLevelId { get; set; }
         public EducationLevel EducationLevel { get; set; }
 
-        [Display(Name = "Иностранные языки")]
-        [NotMapped]
-        public List<int> ForeignLanguagesId { get; set; } = new();
+        [Display(Name = "Иностранный язык")]
+        public ForeignLanguage ForeignLanguage { get; set; }
+        public int? ForeignLanguageId { get; set; }
 
         [NotMapped]
         public int Age {
@@ -88,13 +89,11 @@ namespace TestWithoutAutentification.Models
             }
         }
 
-        public List<Citizenship> Citizenships { get; set; } = new();
+        public DateTime CreationDate { get; set; }
 
         public List<PlaceOfWork> PlacesOfWork { get; set; } = new();
 
         public List<EducationalInstitution> EducationalInstitutions { get; set; } = new();
-
-        public List<ForeignLanguage> ForeignLanguages { get; set; } = new();
 
         public int? UserId { get; set; }
         public User User { get; set; }

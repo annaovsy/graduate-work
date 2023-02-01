@@ -15,6 +15,11 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            <h4>@Html.DisplayFor(model => model.Position)</h4>
+        </dt>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
         <dd class="col-sm-10">
@@ -55,13 +60,10 @@
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CitizenshipsId)
+            @Html.DisplayNameFor(model => model.SpecializationId)
         </dt>
         <dd class="col-sm-10">
-            @foreach (var i in Model.Citizenships)
-            {
-                @Html.DisplayFor(model => i.Name)<br />
-            }
+            @Html.DisplayFor(model => model.Specialization.Name)
         </dd>
     </dl>
     <dl class="row">
@@ -74,14 +76,6 @@
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Position)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Position)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Salary)
         </dt>
         <dd class="col-sm-10">
@@ -89,14 +83,17 @@
             @Html.DisplayFor(model => model.Salary.Currency.Name)
         </dd>
     </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AboutMyself)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AboutMyself)
-        </dd>
-    </dl>
+    @if (Model.AboutMyself != null)
+    {
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AboutMyself)
+            </dt>
+            <dd class="col-sm-10">
+                <textarea asp-for="AboutMyself" style="overflow:hidden;" class="textareaShow" readonly></textarea>
+            </dd>
+        </dl>
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EducationLevelId)

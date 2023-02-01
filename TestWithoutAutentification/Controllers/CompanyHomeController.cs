@@ -23,31 +23,39 @@ namespace TestWithoutAutentification.Controllers
             _context = context;
         }
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             if(User.Identity.IsAuthenticated && User.IsInRole("company"))
             {
                 var resumes = _context.Resume.Include(x => x.City)
                                         .Include(x => x.Sex)
-                                        .Include(x => x.Citizenships)
                                         .Include(x => x.WorkExperience)
                                         .Include(x => x.Salary.Currency)
                                         .Include(x => x.EducationLevel)
-                                        .Include(x => x.User)
-                                        .ToListAsync();
+                                        .Include(x => x.ForeignLanguage.Language)
+                                        .Include(x => x.ForeignLanguage.LanguageLevel)
+                                        .Include(x => x.User);
 
-                return View(await resumes);
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    resumes = resumes.Where(s => s.Position!.Contains(searchString))
+                        .Include(x => x.City)
+                        .Include(x => x.Sex)
+                        .Include(x => x.WorkExperience)
+                        .Include(x => x.Salary.Currency)
+                        .Include(x => x.EducationLevel)
+                        .Include(x => x.ForeignLanguage.Language)
+                        .Include(x => x.ForeignLanguage.LanguageLevel)
+                        .Include(x => x.User);
+                }
+
+                return View(await resumes.ToListAsync());
             }
             else
             {
                 return RedirectToAction("CompanyLogin", "Account");
             }
             
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -69,14 +77,13 @@ namespace TestWithoutAutentification.Controllers
                     {
                         var user = _context.Users.FirstOrDefault(i => i.Id == resume.UserId);
                                                 
-                        Service.SendEmailCustom(company.Name, company.Email, user.Email, title, text);
-                        //return PartialView("_GeneralModal", "OK");
+                        Service.SendEmailToCandidate(company.Name, company.Email, user.Email, title, text);
                     }
                 }
             }
             catch(Exception e)
             {
-
+                _logger.LogError(e.Message);
             }
             return RedirectToAction(nameof(Index));
         }

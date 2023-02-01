@@ -26,8 +26,9 @@ namespace TestWithoutAutentification.Controllers
                 .Include(v => v.Company)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
+                .Include(v => v.Specialization)
                 .Where(v => v.Company.Email == User.Identity.Name);
-            return View(await appDbContext.ToListAsync());
+            return View(await appDbContext.OrderByDescending(v => v.CreationDate).ToListAsync());
         }
 
         // GET: Vacancies/Details/5
@@ -43,6 +44,7 @@ namespace TestWithoutAutentification.Controllers
                 .Include(v => v.Company)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
+                .Include(v => v.Specialization)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vacancy == null)
             {
@@ -58,6 +60,7 @@ namespace TestWithoutAutentification.Controllers
             ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
+            ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
 
             return View();
         }
@@ -68,9 +71,8 @@ namespace TestWithoutAutentification.Controllers
         {
             if (ModelState.IsValid)
             {
-                //vacancy.Requirements = vacancy.Requirements.Split("\r\n");
-                //vacancy.Conditions = vacancy.Conditions.Replace("\r\n", "<br />");
                 vacancy.Company = _context.Companies.FirstOrDefault(elem => elem.Email == User.Identity.Name);
+                vacancy.CreationDate = DateTime.Now;
 
                 _context.Vacancy.Add(vacancy);
                 await _context.SaveChangesAsync();
@@ -79,6 +81,7 @@ namespace TestWithoutAutentification.Controllers
             ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
+            ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
 
             return View(vacancy);
         }
@@ -96,6 +99,7 @@ namespace TestWithoutAutentification.Controllers
                 .Include(v => v.Company)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
+                .Include(v => v.Specialization)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vacancy == null)
             {
@@ -103,13 +107,13 @@ namespace TestWithoutAutentification.Controllers
             }
             ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
+            ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
+
             return View(vacancy);
         }
 
-        // POST: Vacancies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Vacancies/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Vacancy vacancy)
@@ -123,8 +127,6 @@ namespace TestWithoutAutentification.Controllers
             {
                 try
                 {
-                    //vacancy.Requirements = vacancy.Requirements.Replace("\r\n", "<br>");
-                    //vacancy.Conditions = vacancy.Conditions.Replace("\r\n", "<br>");
                     _context.Update(vacancy);
                     await _context.SaveChangesAsync();
                 }
@@ -143,7 +145,9 @@ namespace TestWithoutAutentification.Controllers
             }
             ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
+            ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
+
             return View(vacancy);
         }
 
@@ -160,6 +164,7 @@ namespace TestWithoutAutentification.Controllers
                 .Include(v => v.Company)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
+                .Include(v => v.Specialization)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vacancy == null)
             {
@@ -197,6 +202,7 @@ namespace TestWithoutAutentification.Controllers
                 .Include(v => v.Company)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
+                .Include(v => v.Specialization)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vacancy == null)
             {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120125219_specializationAdd3")]
+    partial class specializationAdd3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,9 +298,6 @@ namespace TestWithoutAutentification.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -333,10 +332,6 @@ namespace TestWithoutAutentification.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("SpecializationId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
@@ -356,8 +351,6 @@ namespace TestWithoutAutentification.Migrations
                         .IsUnique();
 
                     b.HasIndex("SexId");
-
-                    b.HasIndex("SpecializationId");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -572,12 +565,6 @@ namespace TestWithoutAutentification.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Specialization", "Specialization")
-                        .WithMany("Resumes")
-                        .HasForeignKey("SpecializationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TestWithoutAutentification.Models.User", "User")
                         .WithOne("Resume")
                         .HasForeignKey("TestWithoutAutentification.Models.Resume", "UserId");
@@ -597,8 +584,6 @@ namespace TestWithoutAutentification.Migrations
                     b.Navigation("Salary");
 
                     b.Navigation("Sex");
-
-                    b.Navigation("Specialization");
 
                     b.Navigation("User");
 
@@ -699,8 +684,6 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Specialization", b =>
                 {
-                    b.Navigation("Resumes");
-
                     b.Navigation("Vacancies");
                 });
 
