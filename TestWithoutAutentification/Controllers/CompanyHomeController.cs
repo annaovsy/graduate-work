@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TestWithoutAutentification.Models;
@@ -21,13 +23,16 @@ namespace TestWithoutAutentification.Controllers
         {
             _logger = logger;
             _context = context;
+           
         }
         
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int specialization, int city, int experience)
         {
             if(User.Identity.IsAuthenticated && User.IsInRole("company"))
             {
-                var resumes = _context.Resume.Include(x => x.City)
+                 DeletePDFFiles();
+
+                 var resumes = _context.Resume.Include(x => x.City)
                                         .Include(x => x.Sex)
                                         .Include(x => x.WorkExperience)
                                         .Include(x => x.Salary.Currency)
@@ -35,6 +40,11 @@ namespace TestWithoutAutentification.Controllers
                                         .Include(x => x.ForeignLanguage.Language)
                                         .Include(x => x.ForeignLanguage.LanguageLevel)
                                         .Include(x => x.User);
+
+                ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
+                ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+                ViewBag.Experiences = new SelectList(_context.WorkExperience, "Id", "Name");
+
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
@@ -49,7 +59,46 @@ namespace TestWithoutAutentification.Controllers
                         .Include(x => x.User);
                 }
 
-                return View(await resumes.ToListAsync());
+                if (specialization != 0)
+                {
+                    resumes = resumes.Where(s => s.SpecializationId == specialization)
+                        .Include(x => x.City)
+                        .Include(x => x.Sex)
+                        .Include(x => x.WorkExperience)
+                        .Include(x => x.Salary.Currency)
+                        .Include(x => x.EducationLevel)
+                        .Include(x => x.ForeignLanguage.Language)
+                        .Include(x => x.ForeignLanguage.LanguageLevel)
+                        .Include(x => x.User);
+                }
+
+                if (city != 0)
+                {
+                    resumes = resumes.Where(s => s.CityId == city)
+                        .Include(x => x.City)
+                        .Include(x => x.Sex)
+                        .Include(x => x.WorkExperience)
+                        .Include(x => x.Salary.Currency)
+                        .Include(x => x.EducationLevel)
+                        .Include(x => x.ForeignLanguage.Language)
+                        .Include(x => x.ForeignLanguage.LanguageLevel)
+                        .Include(x => x.User);
+                }
+
+                if (experience != 0)
+                {
+                    resumes = resumes.Where(s => s.WorkExperienceId == experience)
+                        .Include(x => x.City)
+                        .Include(x => x.Sex)
+                        .Include(x => x.WorkExperience)
+                        .Include(x => x.Salary.Currency)
+                        .Include(x => x.EducationLevel)
+                        .Include(x => x.ForeignLanguage.Language)
+                        .Include(x => x.ForeignLanguage.LanguageLevel)
+                        .Include(x => x.User);
+                }
+
+                return View(await resumes.OrderByDescending(v => v.CreationDate).ToListAsync());
             }
             else
             {
@@ -91,6 +140,15 @@ namespace TestWithoutAutentification.Controllers
         public IActionResult GetPartialMail(int id)
         {
             return PartialView("SendMailToCandidate");           
+        }
+
+        private static void DeletePDFFiles()
+        {
+            DirectoryInfo dirInfo = new("wwwroot/files/");
+            foreach (FileInfo file in dirInfo.GetFiles())
+            {
+                file.Delete();
+            }
         }
     }
 }

@@ -23,8 +23,8 @@ namespace TestWithoutAutentification.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString, int specialization, int city, int experience, string remote)
-        {
+        public async Task<IActionResult> Index(string searchString, int specialization, int city, int experience/*, string remote*/)
+        {          
             var vacancies = _context.Vacancy
                    .Include(v => v.City)
                    .Include(v => v.Company)
@@ -70,16 +70,6 @@ namespace TestWithoutAutentification.Controllers
             if (experience != 0)
             {
                 vacancies = vacancies.Where(s => s.WorkExperienceId == experience)
-                   .Include(v => v.City)
-                   .Include(v => v.Company)
-                   .Include(v => v.Salary.Currency)
-                   .Include(v => v.WorkExperience)
-                   .Include(v => v.Specialization);
-            }
-
-            if (remote != null)
-            {
-                vacancies = vacancies.Where(s => s.Remote == true)
                    .Include(v => v.City)
                    .Include(v => v.Company)
                    .Include(v => v.Salary.Currency)

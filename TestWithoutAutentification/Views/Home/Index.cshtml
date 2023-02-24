@@ -19,28 +19,28 @@
         </div>       
     </div>
     <div class="form-group row" id="filterDiv" style="display:none;">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="control-label">Специализация</label>
             <select name="specialization" id="specialization" asp-items="ViewBag.Specializations" class="form-control">
                 <option selected>Все</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="control-label">Город</label>
             <select name="city" id="city" asp-items="ViewBag.Cities" class="form-control">
                 <option selected>Все</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="control-label">Опыт работы</label>
             <select name="experience" id="experience" asp-items="ViewBag.Experiences" class="form-control">
                 <option selected>Все</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        @*<div class="col-sm-3">
             <label class="control-label">Удаленная работа</label>
             <input type="checkbox" name="remote" id="remote" />  
-        </div>
+        </div>*@
     </div>
 </form>
 <div class="hrefFilter">
@@ -52,7 +52,7 @@
 <div id="list-main">
     <div class="listContainer">
         <div class="list-title">
-            <a asp-action="ShowVacancy" asp-controller="Vacancies" asp-route-id="@item.Id">@item.Position</a> @*добавить страницу просмотра вакансии*@
+            <a asp-action="ShowVacancy" asp-controller="Vacancies" asp-route-id="@item.Id">@item.Position</a>
         </div>
         <span class="font-weight-bold">@item.Salary.Amount @item.Salary.Currency.Name</span>
         <div>
@@ -80,5 +80,22 @@
     </div>
 </div>
 }
+
+@*<script>
+    $(function ready() {
+        localStorage.removeItem("companyIsActive");
+        localStorage.setItem("userIsActive", "true");
+        var userIsActive = localStorage.getItem("userIsActive");
+        if (userIsActive == "true") {
+            $(".navbar-nav .company").removeClass("active");
+            $(".navbar-nav .user").addClass("active");
+        }
+        //var companyIsActive = localStorage.getItem("companyIsActive");
+        //if (companyIsActive == "true") {
+        //    $(".navbar-nav .user").removeClass("active");
+        //    $(".navbar-nav .company").addClass("active");
+        //}
+    })
+</script>*@
 
 

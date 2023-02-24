@@ -10,14 +10,15 @@
     </div>
 </nav>
 
-<h3>Просмотр резюме</h3>
+<div style="display: flex; align-items: center;">
+    <h4>Просмотр резюме</h4>
+    <a style="cursor:pointer; margin-left:40px;" title="Скачать" class="download" href="/files/Resume.pdf" download>
+        @*<img class="download" src="~/img/down2.png" title="Скачать">*@
+    </a>
+</div>
 <div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            <h4>@Html.DisplayFor(model => model.Position)</h4>
-        </dt>
-    </dl>
+    <h3 class="mb-3">@Html.DisplayFor(model => model.Position)</h3>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -102,6 +103,9 @@
             @Html.DisplayFor(model => model.EducationLevel.Name)
         </dd>
     </dl>
+    <div class="mb-3" style="font-size: 0.85rem; color:gray;">
+        Создано @Html.DisplayFor(model => model.CreationDate)
+    </div>
 </div>
 <div class="form-group">
     <input type="button" class="btn btn-primary compItem" data-url="@Url.Action("GetPartialMail", "CompanyHome", new { id = Model.Id })" value="Связаться" />
@@ -109,3 +113,11 @@
 <div>
     <a asp-action="Index" asp-controller="CompanyHome">К списку</a>
 </div>
+@*<script>
+            $(document).ready(function () {
+                var mod = @Model.Id;
+                var myString = mod.toString();
+                var url = '/files/Резюме_' + myString + '.pdf';
+                document.querySelector('a[name="href"]').setAttribute("href", url);
+            });
+    </script>*@

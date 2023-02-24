@@ -221,3 +221,13 @@ select option:hover{
 .hrefFilter{
     margin-bottom: 15px;
 }
+a.download {
+    background: url(/img/download_green_button_icon_227819.png) no-repeat;
+    display: block;
+    width: 40px;
+    height: 33px;
+}
+
+.download:hover {
+    background: url(/img/download_blue_button_icon_227818.png) no-repeat;
+}

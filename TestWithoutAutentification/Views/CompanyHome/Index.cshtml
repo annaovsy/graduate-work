@@ -19,7 +19,30 @@
             <input type="submit" value="Найти" class="form-control btn btn-light" style="border-color: #DADADA; " />
         </div>
     </div>
+    <div class="form-group row" id="filterDiv" style="display:none;">
+        <div class="col-sm-4">
+            <label class="control-label">Специализация</label>
+            <select name="specialization" id="specialization" asp-items="ViewBag.Specializations" class="form-control">
+                <option selected>Все</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">Город</label>
+            <select name="city" id="city" asp-items="ViewBag.Cities" class="form-control">
+                <option selected>Все</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">Опыт работы</label>
+            <select name="experience" id="experience" asp-items="ViewBag.Experiences" class="form-control">
+                <option selected>Все</option>
+            </select>
+        </div>
+    </div>
 </form>
+<div class="hrefFilter">
+    <a id="filter">Показать фильтры</a>
+</div>
 
 @foreach (var item in Model)
 {

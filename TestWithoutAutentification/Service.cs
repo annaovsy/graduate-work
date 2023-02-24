@@ -1,16 +1,43 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using MimeKit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
+using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification
 {
     public static class Service
     {
+        public static void CreatePDF(Resume resume)
+        {
+            Document document = new(PageSize.A4, 20, 20, 30, 20);
+
+            string ttf = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALNBI.TTF");
+            var baseFont = BaseFont.CreateFont(ttf, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            var font = new Font(baseFont, Font.DEFAULTSIZE, Font.NORMAL);
+
+            using (var writer = PdfWriter.GetInstance(document, new FileStream("wwwroot/files/Resume.pdf", FileMode.Create)))
+            {
+                document.Open();
+                document.NewPage();
+                document.Add(new Paragraph(resume.Position, font));
+                document.Add(new Paragraph("Имя " + resume.FullName, font));
+                document.Add(new Paragraph("Мобильный телефон " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Город проживания " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Дата рождения " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Пол " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Специализация " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Опыт работы " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Зарплата " + resume.MobilePhone, font));
+                document.Add(new Paragraph("О себе " + resume.MobilePhone, font));
+                document.Add(new Paragraph("Уровень образования " + resume.MobilePhone, font));
+                document.Close();
+                writer.Close();            
+            }
+        }
+
         public static void SendEmailToCandidate(string senderName, string senderEmail, string recipient, string title, string text)
         {
             try

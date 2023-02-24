@@ -6,10 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using TestWithoutAutentification.Models;
 using TestWithoutAutentification.Models.AdditionalModels;
 using System;
+using System.Web;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestWithoutAutentification.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "user")]
     public class ResumesController : Controller
     {
         private readonly AppDbContext _context;
@@ -18,7 +21,7 @@ namespace TestWithoutAutentification.Controllers
         {
             _context = context;
         }
-       
+
         // get: resumes/details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -52,12 +55,12 @@ namespace TestWithoutAutentification.Controllers
             if (user.Resume != null)
                 return RedirectToAction("Details", "Resumes", new { user.Resume.Id });
 
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
-            ViewBag.Languages = new SelectList(_context.Language, "Id", "Name");
+            ViewBag.Languages = new SelectList(_context.Language.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.LanguageLevels = new SelectList(_context.LanguageLevel, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
 
@@ -69,16 +72,16 @@ namespace TestWithoutAutentification.Controllers
         {
                 _context.PlaceOfWork.Add(placeOfWork);
                 _context.SaveChanges();
-               // places.Add(new PlaceOfWork());
-                //if(_resumeCreateModel.PlasesOfWorkId == null)
-                //    _resumeCreateModel.PlasesOfWorkId = new List<int>(placeOfWork.Id);                
-                //else
-                //    _resumeCreateModel.PlasesOfWorkId.Add(placeOfWork.Id);
+            // places.Add(new PlaceOfWork());
+            //if(_resumeCreateModel.PlasesOfWorkId == null)
+            //    _resumeCreateModel.PlasesOfWorkId = new List<int>(placeOfWork.Id);                
+            //else
+            //    _resumeCreateModel.PlasesOfWorkId.Add(placeOfWork.Id);
 
-                //return RedirectToAction("Create", "Resumes");
-                // return Content(placeOfWork.Organization);
-                //return LocalRedirect("/Create/Resumes");
-           
+            //return RedirectToAction("Create", "Resumes");
+            // return Content(placeOfWork.Organization);
+            //return LocalRedirect("/Create/Resumes");
+         
             return PartialView("_CreatePlacesOfWork", placeOfWork);
         }
 
@@ -99,12 +102,12 @@ namespace TestWithoutAutentification.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Home");
             }
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
-            ViewBag.Languages = new SelectList(_context.Language, "Id", "Name");
+            ViewBag.Languages = new SelectList(_context.Language.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.LanguageLevels = new SelectList(_context.LanguageLevel, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
 
@@ -134,12 +137,12 @@ namespace TestWithoutAutentification.Controllers
                 return NotFound();
             }
 
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
-            ViewBag.Languages = new SelectList(_context.Language, "Id", "Name");
+            ViewBag.Languages = new SelectList(_context.Language.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.LanguageLevels = new SelectList(_context.LanguageLevel, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
 
@@ -176,12 +179,12 @@ namespace TestWithoutAutentification.Controllers
                 }
                 return RedirectToAction("Index", "Home");
             }
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
-            ViewBag.Languages = new SelectList(_context.Language, "Id", "Name");
+            ViewBag.Languages = new SelectList(_context.Language.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.LanguageLevels = new SelectList(_context.LanguageLevel, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
 
@@ -222,6 +225,7 @@ namespace TestWithoutAutentification.Controllers
             return _context.Resume.Any(e => e.Id == id);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> ShowResume(int? id)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("company"))
@@ -245,6 +249,8 @@ namespace TestWithoutAutentification.Controllers
                 {
                     return NotFound();
                 }
+
+                Service.CreatePDF(resume);
 
                 return View(resume);
             }

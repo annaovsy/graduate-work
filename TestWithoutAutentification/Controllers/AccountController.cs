@@ -99,7 +99,7 @@ namespace TestWithoutAutentification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompanyLogin(CompanyLoginModel model)
+        public async Task<IActionResult> CompanyLogin(LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace TestWithoutAutentification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompanyRegister(CompanyRegisterModel model)
+        public async Task<IActionResult> CompanyRegister(Company model)
         {
             if (ModelState.IsValid)
             {

@@ -1,7 +1,13 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿
+//$(function () {
+//    $.ajaxSetup({ cache: false });
+//    $(".down").click(function (e) {
+//        e.preventDefault();
+//        var url = $(this).data('url');
+//        $.get(url, function (data) {
+//        });
+//    });
+//})
 
 $(function () {
     var PlaceHolderElement = $('#PlaceHolder');
@@ -38,10 +44,6 @@ $(function () {
             filterHref.innerHTML = "Скрыть фильтры";
         }
     });
-})
-
-$(function () {
-
 })
 
 $(function () {
@@ -113,22 +115,7 @@ $(function () {
 
     if (sessionStorage.getItem('experience')) {
         document.getElementById("experience").options[sessionStorage.getItem('experience')].selected = true;
-    }
-
-    //document.getElementById("remote").onchange = function () {
-    //    sessionStorage.setItem('remote', $("#remote").prop("checked"));
-
-    //   // sessionStorage.setItem('remote', document.getElementById("remote").value);
-    //}
-
-    //if (sessionStorage.getItem('remote')) {
-    //    var r = sessionStorage.getItem('remote');
-    //    if (r == "true") {
-
-    //        $("#remote").prop('checked', true);
-    //    }
-    //    //document.getElementById("remote").prop('checked', true);
-    //}
+    }    
 })
 
 $(function () {

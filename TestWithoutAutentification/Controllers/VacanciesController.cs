@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Controllers
-{
+{   
+    [Authorize(Roles = "company")]
     public class VacanciesController : Controller
     {
         private readonly AppDbContext _context;
@@ -57,7 +59,7 @@ namespace TestWithoutAutentification.Controllers
         // GET: Vacancies/Create
         public IActionResult Create()
         {
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
@@ -78,7 +80,7 @@ namespace TestWithoutAutentification.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
@@ -105,7 +107,7 @@ namespace TestWithoutAutentification.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
@@ -143,7 +145,7 @@ namespace TestWithoutAutentification.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Cities = new SelectList(_context.City, "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Specializations = new SelectList(_context.Specialization, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
@@ -190,6 +192,7 @@ namespace TestWithoutAutentification.Controllers
             return _context.Vacancy.Any(e => e.Id == id);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> ShowVacancy(int? id)
         {
             if (id == null)

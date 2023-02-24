@@ -49,6 +49,7 @@ namespace TestWithoutAutentification.Models
         [Display(Name = "Условия работы")]
         public string Conditions { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:g}")]
         public DateTime CreationDate { get; set; }
 
         public int? CompanyId { get; set; }

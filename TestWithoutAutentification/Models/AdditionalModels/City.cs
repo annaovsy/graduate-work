@@ -12,5 +12,6 @@ namespace TestWithoutAutentification.Models.AdditionalModels
 
         public List<Resume> Resumes { get; set; } = new();
         public List<Vacancy> Vacancies { get; set; } = new();
+        public List<Company> Companies { get; set; } = new();
     }
 }

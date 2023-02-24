@@ -1,7 +1,7 @@
 ﻿@model TestWithoutAutentification.Models.Resume
  @*Показ резюме Пользователя*@
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Ваше резюме";
 }
 <nav class="navbar navbar-expand-sm">
     <div class="container justify-content-end">
@@ -9,18 +9,14 @@
     </div>
 </nav>
 
-<h3>Ваше резюме</h3>
+<h4>Ваше резюме</h4>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
     <a data-url="@Url.Action("Delete", "Resumes", new { id = Model.Id })" asp-route-id="@Model.Id" type="button" class="compItem" style="margin-left: 3.5vh;">Удалить</a>    
 </div>
 <div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            <h4>@Html.DisplayFor(model => model.Position)</h4>
-        </dt>
-    </dl>
+    <h3 class="mb-3">@Html.DisplayFor(model => model.Position)</h3>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -114,4 +110,7 @@
             <span class="font-weight-bolder">Уровень </span>@Html.DisplayFor(model => model.ForeignLanguage.LanguageLevel.Name)
         </dd>
     </dl>
+    <div class="mb-3" style="font-size: 0.85rem; color:gray;">
+        Создано @Html.DisplayFor(model => model.CreationDate)
+    </div>
 </div>

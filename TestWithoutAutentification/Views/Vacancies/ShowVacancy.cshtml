@@ -94,11 +94,13 @@
             <a href="mailto:@Model.Company.Email">@Model.Company.Email</a>
         </dd>
     </dl>
+    <div class="mb-3" style="font-size: 0.85rem; color:gray;">
+        Создано @Html.DisplayFor(model => model.CreationDate)
+    </div>
     <div>
         <input type="button" class="btn btn-primary compItem" data-url="@Url.Action("GetPartialMail", "Home", new { id = Model.Id })" value="Откликнуться на вакансию" /><br />
     </div>
-   
-    </div>
+</div>
 <div>
     <a asp-action="Index" asp-controller="Home">Вернуться к списку</a>
 </div>

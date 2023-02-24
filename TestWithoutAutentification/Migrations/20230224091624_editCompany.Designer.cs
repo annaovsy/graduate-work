@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestWithoutAutentification.Models;
 
 namespace TestWithoutAutentification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230224091624_editCompany")]
+    partial class editCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,10 +251,8 @@ namespace TestWithoutAutentification.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -284,8 +284,6 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.HasIndex("RoleId");
 
@@ -545,10 +543,6 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.Company", b =>
                 {
-                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.City", null)
-                        .WithMany("Companies")
-                        .HasForeignKey("CityId");
-
                     b.HasOne("TestWithoutAutentification.Models.Role", "Role")
                         .WithMany("Companies")
                         .HasForeignKey("RoleId");
@@ -669,8 +663,6 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.City", b =>
                 {
-                    b.Navigation("Companies");
-
                     b.Navigation("Resumes");
 
                     b.Navigation("Vacancies");

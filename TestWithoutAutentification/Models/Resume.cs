@@ -31,7 +31,7 @@ namespace TestWithoutAutentification.Models
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Дата рождения")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:D}")]
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
@@ -89,6 +89,7 @@ namespace TestWithoutAutentification.Models
             }
         }
 
+        [DisplayFormat(DataFormatString = "{0:g}")]
         public DateTime CreationDate { get; set; }
 
         public List<PlaceOfWork> PlacesOfWork { get; set; } = new();
