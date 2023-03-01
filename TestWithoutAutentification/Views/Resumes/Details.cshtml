@@ -12,7 +12,7 @@
 <h4>Ваше резюме</h4>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-    <a data-url="@Url.Action("Delete", "Resumes", new { id = Model.Id })" asp-route-id="@Model.Id" type="button" class="compItem" style="margin-left: 3.5vh;">Удалить</a>    
+    <a data-url="@Url.Action("Delete", "Resumes", new { id = Model.Id })" asp-route-id="@Model.Id" type="button" class="modalBtn" style="margin-left: 3.5vh;">Удалить</a>    
 </div>
 <div>
     <hr />
@@ -51,10 +51,10 @@
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SexId)
+            @Html.DisplayNameFor(model => model.GenderId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sex.Name)
+            @Html.DisplayFor(model => model.Gender.Name)
         </dd>
     </dl>
     <dl class="row">

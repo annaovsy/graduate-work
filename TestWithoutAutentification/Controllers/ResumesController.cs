@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestWithoutAutentification.Models;
-using TestWithoutAutentification.Models.AdditionalModels;
 using System;
 using System.Web;
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Windows.Web.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using TestWithoutAutentification.Models.AdditionalModels;
 
 namespace TestWithoutAutentification.Controllers
 {
@@ -16,10 +19,12 @@ namespace TestWithoutAutentification.Controllers
     public class ResumesController : Controller
     {
         private readonly AppDbContext _context;
-     
-        public ResumesController(AppDbContext context)
+        private readonly IWebHostEnvironment _appEnvironment;
+
+        public ResumesController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         // get: resumes/details/5
@@ -32,7 +37,7 @@ namespace TestWithoutAutentification.Controllers
 
             var resume = await _context.Resume
                 .Include(x => x.City)
-                .Include(x => x.Sex)
+                .Include(x => x.Gender)
                 .Include(x => x.WorkExperience)
                 .Include(x => x.Salary.Currency)
                 .Include(x => x.EducationLevel)
@@ -56,7 +61,7 @@ namespace TestWithoutAutentification.Controllers
                 return RedirectToAction("Details", "Resumes", new { user.Resume.Id });
 
             ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
-            ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
+            ViewBag.Gender = new SelectList(_context.Gender, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
@@ -66,44 +71,39 @@ namespace TestWithoutAutentification.Controllers
 
             return View();
         }
-
-        [HttpPost]
-        public IActionResult CreatePlacesOfWork(PlaceOfWork placeOfWork)
-        {
-                _context.PlaceOfWork.Add(placeOfWork);
-                _context.SaveChanges();
-            // places.Add(new PlaceOfWork());
-            //if(_resumeCreateModel.PlasesOfWorkId == null)
-            //    _resumeCreateModel.PlasesOfWorkId = new List<int>(placeOfWork.Id);                
-            //else
-            //    _resumeCreateModel.PlasesOfWorkId.Add(placeOfWork.Id);
-
-            //return RedirectToAction("Create", "Resumes");
-            // return Content(placeOfWork.Organization);
-            //return LocalRedirect("/Create/Resumes");
-         
-            return PartialView("_CreatePlacesOfWork", placeOfWork);
-        }
-
-       
+                  
         // post: resumes/create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Resume resume)
+        public async Task<IActionResult> Create(Resume resume, IFormFile uploadedFile)
         {
             if (ModelState.IsValid)
-            {                
+            {
                 resume.User = _context.Users.FirstOrDefault(elem => elem.Email == User.Identity.Name);
                 if (resume.ForeignLanguage.LanguageId == 0)
                     resume.ForeignLanguage = _context.ForeignLanguage.FirstOrDefault(el => el.Id == 1);
-                
+
+                if (uploadedFile != null)
+                {
+                    // путь к папке Files
+                    string path = "/files/" + uploadedFile.FileName;
+                    // сохраняем файл в папку Files в каталоге wwwroot
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
+                    Image file = new() { Name = uploadedFile.FileName, Path = path };
+                    _context.Images.Add(file);
+                    resume.Image = file;
+                }
+
                 resume.CreationDate = DateTime.Now;
                 _context.Resume.Add(resume);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
-            ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
+            ViewBag.Gender = new SelectList(_context.Gender, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
@@ -123,7 +123,7 @@ namespace TestWithoutAutentification.Controllers
             }
 
             var resume = await _context.Resume.Include(x => x.City)
-                                        .Include(x => x.Sex)
+                                        .Include(x => x.Gender)
                                         .Include(x => x.WorkExperience)
                                         .Include(x => x.Salary.Currency)
                                         .Include(x => x.EducationLevel)
@@ -138,7 +138,7 @@ namespace TestWithoutAutentification.Controllers
             }
 
             ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
-            ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
+            ViewBag.Gender = new SelectList(_context.Gender, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
@@ -180,7 +180,7 @@ namespace TestWithoutAutentification.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Cities = new SelectList(_context.City.OrderBy(e => e.Name), "Id", "Name");
-            ViewBag.Sex = new SelectList(_context.Sex, "Id", "Name");
+            ViewBag.Gender = new SelectList(_context.Gender, "Id", "Name");
             ViewBag.WorkExperiences = new SelectList(_context.WorkExperience, "Id", "Name");
             ViewBag.Currencies = new SelectList(_context.Currency, "Id", "Name");
             ViewBag.EducationLevels = new SelectList(_context.EducationLevel, "Id", "Name");
@@ -237,7 +237,7 @@ namespace TestWithoutAutentification.Controllers
 
                 var resume = await _context.Resume
                     .Include(x => x.City)
-                    .Include(x => x.Sex)
+                    .Include(x => x.Gender)
                     .Include(x => x.WorkExperience)
                     .Include(x => x.Salary.Currency)
                     .Include(x => x.EducationLevel)

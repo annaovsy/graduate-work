@@ -46,17 +46,17 @@
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SexId" class="control-label"></label>
-                @foreach (var item in (SelectList)ViewBag.Sex)
+                <label asp-for="GenderId" class="control-label"></label>
+                @foreach (var item in (SelectList)ViewBag.Gender)
                 {
                     <br />
                     <div class="form-check">
-                        @Html.RadioButtonFor(m => m.SexId, item.Value, new { id = "sex" + item.Value, @class = "form-check-input", name = "Sex", @value = item.Value, @text = item.Text })
+                        @Html.RadioButtonFor(m => m.GenderId, item.Value, new { id = "Gender" + item.Value, @class = "form-check-input", name = "Gender", @value = item.Value, @text = item.Text })
                         <label class="control-label form-check-label" for="">@item.Text</label>
                     </div>
                 }
                 <br />
-                <span asp-validation-for="SexId" class="text-danger"></span>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="WorkExperienceId" class="control-label"></label>

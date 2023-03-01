@@ -20,9 +20,10 @@ namespace TestWithoutAutentification.Models
         public DbSet<LanguageLevel> LanguageLevel { get; set; }
         public DbSet<PlaceOfWork> PlaceOfWork { get; set; }
         public DbSet<Salary> Salary { get; set; }
-        public DbSet<Sex> Sex { get; set; }
+        public DbSet<Gender> Gender { get; set; }
         public DbSet<WorkExperience> WorkExperience { get; set; }
         public DbSet<Specialization> Specialization { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -35,8 +36,8 @@ namespace TestWithoutAutentification.Models
             string companyRoleName = "company";
 
             // добавляем роли
-            Role userRole = new Role { Id = 1, Name = userRoleName };
-            Role companyRole = new Role { Id = 2, Name = companyRoleName };
+            Role userRole = new() { Id = 1, Name = userRoleName };
+            Role companyRole = new() { Id = 2, Name = companyRoleName };
 
             modelBuilder.Entity<Role>().HasData(new Role[] { userRole, companyRole });
             base.OnModelCreating(modelBuilder);

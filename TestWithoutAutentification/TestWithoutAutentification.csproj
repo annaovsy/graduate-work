@@ -9,6 +9,7 @@
     <PackageReference Include="Bootstrap.Multiselect" Version="0.9.13" />
     <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="MailKit" Version="3.4.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
       <PrivateAssets>all</PrivateAssets>
@@ -48,6 +49,14 @@
 
   <ItemGroup>
     <SourceGeneratorInput Remove="Migrations\20230224110306_editCompany2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230226084058_editCity.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230226084058_editCity.Designer.cs" />
   </ItemGroup>
 
 </Project>

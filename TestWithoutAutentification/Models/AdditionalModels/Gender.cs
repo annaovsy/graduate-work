@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace TestWithoutAutentification.Models.AdditionalModels
 {
-    public class City
+    public class Gender
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
         public List<Resume> Resumes { get; set; } = new();
-        public List<Vacancy> Vacancies { get; set; } = new();
     }
 }

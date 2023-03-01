@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TestWithoutAutentification.ViewModels; // пространство имен моделей RegisterModel и LoginModel
-using TestWithoutAutentification.Models; // пространство имен UserContext и класса User
+using TestWithoutAutentification.ViewModels;
+using TestWithoutAutentification.Models;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,9 +15,9 @@ namespace TestWithoutAutentification.Controllers
 {
     public class AccountController : Controller
     {
-        private Models.AppDbContext db;
+        private readonly AppDbContext db;
 
-        public AccountController(Models.AppDbContext context)
+        public AccountController(AppDbContext context)
         {
             db = context;
         }
@@ -39,7 +39,6 @@ namespace TestWithoutAutentification.Controllers
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == HashPassword(model.Password));
                 if (user != null)
                 {
-                    //DisplayNoWifiDialog();
                     await Authenticate(user.Email, user.Role.Name, user.Name);                    
 
                     return RedirectToAction("Index", "Home");
@@ -184,7 +183,6 @@ namespace TestWithoutAutentification.Controllers
 
         public static string HashPassword(string password)
         { 
-            //почитать про MD5
             MD5 mD5 = MD5.Create();
 
             byte[] b = Encoding.ASCII.GetBytes(password);

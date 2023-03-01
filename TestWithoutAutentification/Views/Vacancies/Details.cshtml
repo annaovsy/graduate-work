@@ -13,7 +13,7 @@
 <h3>@Html.DisplayFor(model => model.Position)</h3>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-    <a data-url="@Url.Action("Delete", "Vacancies", new { id = Model.Id })" asp-route-id="@Model.Id" type="button" class="compItem" style="margin-left: 3.5vh;">Удалить</a>
+    <a data-url="@Url.Action("Delete", "Vacancies", new { id = Model.Id })" asp-route-id="@Model.Id" type="button" class="modalBtn" style="margin-left: 3.5vh;">Удалить</a>
 </div>
 <div>
     <hr />

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TestWithoutAutentification.Controllers.AccountController">
+    <Position X="3.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAUAAAAAAAAAAIAAAABAAAIAAAUAAAAABA=</HashCode>
+      <FileName>Controllers\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.ViewModels.CompanyRegisterModel">
+    <Position X="7.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAACAAgAAIAAAAAAQAAAAAAAACAAAAJAAAIAA=</HashCode>
+      <FileName>ViewModels\CompanyRegisterModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Models.Resume">
+    <Position X="9.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAADAGQBIEAAJIAoAEAAAAgAAAEQQEAAIAAQACAAAMg=</HashCode>
+      <FileName>Models\Resume.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Models.User">
+    <Position X="12" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAACAAAAAAEAAAAAQAAAAAAAACAAAAAAgAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Models.Vacancy">
+    <Position X="13.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAACACABIEIQAAAoABAAAAAAAAMAAAACAAAABAAAAEA=</HashCode>
+      <FileName>Models\Vacancy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Models.AppDbContext">
+    <Position X="0.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAKAAARAAICESAAAAAGgAgAAAAAAAAAAgAAMA=</HashCode>
+      <FileName>Models\AppDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Controllers.ResumesController">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBACAAAAAAIAGAAEAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ResumesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Controllers.VacanciesController">
+    <Position X="9" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAABBACAAAAAAAAAAAEAAEACAAEAAAAAAQA=</HashCode>
+      <FileName>Controllers\VacanciesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Controllers.HomeController">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABQAAAAAABAAAIAAAAAAAAAEBAAAAAAg=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestWithoutAutentification.Controllers.CompanyHomeController">
+    <Position X="14" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEBQAAAAAAAAAAIAAAAAAAAAEBAAAAgAA=</HashCode>
+      <FileName>Controllers\CompanyHomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -66,5 +66,6 @@ namespace TestWithoutAutentification.Models
                 return FirstNameContactPerson + ' ' + LastNameContactPerson;
             }
         }
+
     }
 }

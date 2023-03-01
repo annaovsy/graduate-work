@@ -48,7 +48,7 @@ $(function () {
 
 $(function () {
     $.ajaxSetup({ cache: false });
-    $(".compItem").click(function (e) {
+    $(".modalBtn").click(function (e) {
         e.preventDefault();
         var url = $(this).data('url');
         $.get(url, function (data) {

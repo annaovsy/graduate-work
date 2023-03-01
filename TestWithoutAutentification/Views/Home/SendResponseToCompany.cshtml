@@ -1,43 +1,27 @@
 ﻿@model TestWithoutAutentification.Models.Company
 
-@if (User.Identity.IsAuthenticated && User.IsInRole("user"))
-{
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4>Отклик на вакансию</h4>
-            <a type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </a>
-        </div>
-        <div class="modal-body">
-            <form method="post" asp-action="SendResponseToCompany" asp-controller="Home">
-                <input name="id" type="hidden" asp-for="Id" class="form-control" />
-                <div class="form-group" style="color: #108265; ">
-                    * Ваше резюме отправится работодателю
-                </div>
-                <div class="form-group">
-                    Вы можете написать сопроводительное письмо:
-                </div>
-                <div class="form-group">
-                    <textarea name="text" style="width:100%; height:40vh;" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <input class="buttonModal btn btn-primary" type="submit" value="Отправить" />
-                </div>
-            </form>
-        </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Отклик на вакансию</h4>
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </a>
     </div>
-}
-else
-{
-    <div class="modal-content">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal" area-hidden="true">X</button>
-        </div>
-        <div class="modal-body">            
-            <div>
-                Необходимо зарегистрироваться
-            </div>               
-        </div>
+    <div class="modal-body">
+        <form method="post" asp-action="SendResponseToCompany" asp-controller="Home">
+            <input name="id" type="hidden" asp-for="Id" class="form-control" />
+            <div class="form-group" style="color: #108265; ">
+                * Ваше резюме отправится работодателю
+            </div>
+            <div class="form-group">
+                Вы можете написать сопроводительное письмо:
+            </div>
+            <div class="form-group">
+                <textarea name="text" style="width:100%; height:40vh;" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input class="buttonModal btn btn-primary" type="submit" value="Отправить" />
+            </div>
+        </form>
     </div>
-}
+</div>

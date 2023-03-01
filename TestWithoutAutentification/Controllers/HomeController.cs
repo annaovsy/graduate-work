@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace TestWithoutAutentification.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString, int specialization, int city, int experience/*, string remote*/)
+        public async Task<IActionResult> Index(string searchString, int specialization, int city, int experience)
         {          
             var vacancies = _context.Vacancy
                    .Include(v => v.City)
@@ -121,11 +120,6 @@ namespace TestWithoutAutentification.Controllers
                 ViewBag.Message = "Необходимо зарегистрироваться";
 
             return PartialView("_GeneralModal");         
-        }
-
-        public IActionResult GeneralModal()
-        {
-            return PartialView("_GeneralModal");
         }
     }
 }

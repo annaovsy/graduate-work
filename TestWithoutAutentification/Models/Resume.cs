@@ -10,6 +10,10 @@ namespace TestWithoutAutentification.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Фото")]
+        public int? ImageId { get; set; }
+        public Image Image { get; set; }
+
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Имя")]
         public string FirstName { get; set; }
@@ -36,8 +40,8 @@ namespace TestWithoutAutentification.Models
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Пол")]
-        public int? SexId { get; set; }
-        public Sex Sex { get; set; }
+        public int? GenderId { get; set; }
+        public Gender Gender { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Опыт работы")]
@@ -72,6 +76,7 @@ namespace TestWithoutAutentification.Models
         public int? ForeignLanguageId { get; set; }
 
         [NotMapped]
+        [Display(Name = "Возраст")]
         public int Age {
             get
             {

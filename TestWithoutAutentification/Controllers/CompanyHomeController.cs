@@ -22,8 +22,7 @@ namespace TestWithoutAutentification.Controllers
         public CompanyHomeController(AppDbContext context, ILogger<CompanyHomeController> logger)
         {
             _logger = logger;
-            _context = context;
-           
+            _context = context;           
         }
         
         public async Task<IActionResult> Index(string searchString, int specialization, int city, int experience)
@@ -33,7 +32,7 @@ namespace TestWithoutAutentification.Controllers
                  DeletePDFFiles();
 
                  var resumes = _context.Resume.Include(x => x.City)
-                                        .Include(x => x.Sex)
+                                        .Include(x => x.Gender)
                                         .Include(x => x.WorkExperience)
                                         .Include(x => x.Salary.Currency)
                                         .Include(x => x.EducationLevel)
@@ -50,7 +49,7 @@ namespace TestWithoutAutentification.Controllers
                 {
                     resumes = resumes.Where(s => s.Position!.Contains(searchString))
                         .Include(x => x.City)
-                        .Include(x => x.Sex)
+                        .Include(x => x.Gender)
                         .Include(x => x.WorkExperience)
                         .Include(x => x.Salary.Currency)
                         .Include(x => x.EducationLevel)
@@ -63,7 +62,7 @@ namespace TestWithoutAutentification.Controllers
                 {
                     resumes = resumes.Where(s => s.SpecializationId == specialization)
                         .Include(x => x.City)
-                        .Include(x => x.Sex)
+                        .Include(x => x.Gender)
                         .Include(x => x.WorkExperience)
                         .Include(x => x.Salary.Currency)
                         .Include(x => x.EducationLevel)
@@ -76,7 +75,7 @@ namespace TestWithoutAutentification.Controllers
                 {
                     resumes = resumes.Where(s => s.CityId == city)
                         .Include(x => x.City)
-                        .Include(x => x.Sex)
+                        .Include(x => x.Gender)
                         .Include(x => x.WorkExperience)
                         .Include(x => x.Salary.Currency)
                         .Include(x => x.EducationLevel)
@@ -89,7 +88,7 @@ namespace TestWithoutAutentification.Controllers
                 {
                     resumes = resumes.Where(s => s.WorkExperienceId == experience)
                         .Include(x => x.City)
-                        .Include(x => x.Sex)
+                        .Include(x => x.Gender)
                         .Include(x => x.WorkExperience)
                         .Include(x => x.Salary.Currency)
                         .Include(x => x.EducationLevel)
