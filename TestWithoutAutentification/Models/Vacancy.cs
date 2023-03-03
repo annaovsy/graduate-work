@@ -18,8 +18,8 @@ namespace TestWithoutAutentification.Models
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Специализация")]
-        public Specialization Specialization { get; set; }
         public int? SpecializationId { get; set; }
+        public Specialization Specialization { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Зарплата")]

@@ -278,6 +278,9 @@ namespace TestWithoutAutentification.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastNameContactPerson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -300,6 +303,10 @@ namespace TestWithoutAutentification.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId")
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
 
                     b.HasIndex("RoleId");
 
@@ -566,9 +573,15 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.Company", b =>
                 {
+                    b.HasOne("TestWithoutAutentification.Models.AdditionalModels.Image", "Image")
+                        .WithOne("Company")
+                        .HasForeignKey("TestWithoutAutentification.Models.Company", "ImageId");
+
                     b.HasOne("TestWithoutAutentification.Models.Role", "Role")
                         .WithMany("Companies")
                         .HasForeignKey("RoleId");
+
+                    b.Navigation("Image");
 
                     b.Navigation("Role");
                 });
@@ -719,6 +732,8 @@ namespace TestWithoutAutentification.Migrations
 
             modelBuilder.Entity("TestWithoutAutentification.Models.AdditionalModels.Image", b =>
                 {
+                    b.Navigation("Company");
+
                     b.Navigation("Resume");
                 });
 

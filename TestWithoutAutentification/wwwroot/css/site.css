@@ -1,6 +1,32 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+dt{
+    font-size: larger;
+    font-weight: lighter;
+}
+dd {
+    font-size: larger;
+}
+
+.avatar{
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.smallLogo {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    margin-right: 4px;
+}
 
 ul li {
     margin: 0 10px 0 10px;

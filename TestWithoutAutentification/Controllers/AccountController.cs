@@ -10,16 +10,22 @@ using TestWithoutAutentification.Models;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using TestWithoutAutentification.Models.AdditionalModels;
 
 namespace TestWithoutAutentification.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AppDbContext db;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             db = context;
+            _appEnvironment = appEnvironment;
         }
 
         #region UserAccount
@@ -106,7 +112,7 @@ namespace TestWithoutAutentification.Controllers
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == HashPassword(model.Password));
                 if (company != null)
-                {
+                {                   
                     await Authenticate(company.Email, company.Role.Name, company.Name);
 
                     return RedirectToAction("Index", "CompanyHome");
@@ -123,7 +129,7 @@ namespace TestWithoutAutentification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompanyRegister(Company model)
+        public async Task<IActionResult> CompanyRegister(Company model, IFormFile uploadedFile)
         {
             if (ModelState.IsValid)
             {
@@ -141,6 +147,17 @@ namespace TestWithoutAutentification.Controllers
                         Phone = model.Phone,
                         Site = model.Site
                     };
+                    if (uploadedFile != null)
+                    {
+                        string path = "/logo/" + uploadedFile.FileName;
+                        using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                        {
+                            await uploadedFile.CopyToAsync(fileStream);
+                        }
+                        Image file = new() { Name = uploadedFile.FileName, Path = path };
+                        db.Images.Add(file);
+                        company.Image = file;
+                    }
                     Role companyRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "company");
                     if (companyRole != null)
                         company.Role = companyRole;

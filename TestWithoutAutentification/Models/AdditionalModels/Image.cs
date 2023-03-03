@@ -12,5 +12,6 @@ namespace TestWithoutAutentification.Models.AdditionalModels
         public string Path { get; set; }
 
         public Resume Resume { get; set; }
+        public Company Company { get; set; }
     }
 }

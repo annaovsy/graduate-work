@@ -11,96 +11,105 @@
 </nav>
 
 <h3>@Html.DisplayFor(model => model.Position)</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Specialization)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Specialization.Name)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Salary)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Salary.Amount)
-            @Html.DisplayFor(model => model.Salary.Currency.Name)
-        </dd>
-    </dl>
-    @if (Model.City != null)
-    {
+
+<hr />
+<div class="d-flex justify-content-between">
+    <div class="w-75">
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Address)
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.SpecializationId)
             </dt>
-            <dd class="col-sm-10">
-                г. @Html.DisplayFor(model => model.City.Name)
-                @Html.DisplayFor(model => model.Address)
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Specialization.Name)
             </dd>
         </dl>
-    }
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkExperienceId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WorkExperience.Name)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Requirements)
-        </dt>
-        <dd class="col-sm-10">
-            <textarea asp-for="Requirements" style="overflow:hidden;" class="textareaShow" readonly></textarea>
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Conditions)
-        </dt>
-        <dd class="col-sm-10">
-            <textarea asp-for="Conditions" style="overflow:hidden;" class="textareaShow" readonly></textarea>
-        </dd>
-    </dl>
-    @if (Model.Remote)
-    {
         <dl class="row">
-            <dd class="col-sm-10">
-                <span style="color:green;">&#10004;</span> Есть возможность удаленной работы
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Salary)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Salary.Amount)
+                @Html.DisplayFor(model => model.Salary.Currency.Name)
             </dd>
         </dl>
-    }
-    <h5>О компании</h5>
-    <dl class="row">
-        <dt class="col-sm-2">
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Company.Name)
-        </dd>
-        <dt class="col-sm-2">
-        </dt>
-        <dd class="col-sm-10">
-            <a href="@Model.Company.Site">@Model.Company.Site</a>
-        </dd>
-        <dt class="col-sm-2">
-            Контактное лицо
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Company.FullNameContactPerson)<br />
-            <a href="mailto:@Model.Company.Email">@Model.Company.Email</a>
-        </dd>
-    </dl>
-    <div class="mb-3" style="font-size: 0.85rem; color:gray;">
-        Создано @Html.DisplayFor(model => model.CreationDate)
+        @if (Model.City != null)
+        {
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd class="col-sm-8">
+                    г. @Html.DisplayFor(model => model.City.Name)
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+            </dl>
+        }
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.WorkExperienceId)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.WorkExperience.Name)
+            </dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Requirements)
+            </dt>
+            <dd class="col-sm-8">
+                <textarea asp-for="Requirements" style="overflow:hidden;" class="textareaShow" readonly></textarea>
+            </dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Conditions)
+            </dt>
+            <dd class="col-sm-8">
+                <textarea asp-for="Conditions" style="overflow:hidden;" class="textareaShow" readonly></textarea>
+            </dd>
+        </dl>
+        @if (Model.Remote)
+        {
+            <dl class="row">
+                <dd class="col-sm-10">
+                    <span style="color:green;">&#10004;</span> Есть возможность удаленной работы
+                </dd>
+            </dl>
+        }
+        <h5>О компании</h5>
+        <dl class="row">
+            <dt class="col-sm-3">
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Company.Name)
+            </dd>
+            <dt class="col-sm-3">
+            </dt>
+            <dd class="col-sm-9">
+                <a href="@Model.Company.Site">@Model.Company.Site</a>
+            </dd>
+            <dt class="col-sm-3">
+                Контактное лицо
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Company.FullNameContactPerson)<br />
+                <a href="mailto:@Model.Company.Email">@Model.Company.Email</a>
+            </dd>
+        </dl>
+        <div class="mb-3" style="font-size: 0.85rem; color:gray;">
+            Создано @Html.DisplayFor(model => model.CreationDate)
+        </div>
+        <div>
+            <input type="button" class="btn btn-primary modalBtn" data-url="@Url.Action("GetPartialMail", "Home", new { id = Model.Id })" value="Откликнуться на вакансию" /><br />
+        </div>
+        <div>
+            <a asp-action="Index" asp-controller="Home">Вернуться к списку</a>
+        </div>
+    </div>    
+    <div class="w-25 text-center">
+        @if (@Model.Company.Image != null)
+        {
+            <img class="logo" src="@Model.Company.Image.Path" />
+        }
     </div>
-    <div>
-        <input type="button" class="btn btn-primary modalBtn" data-url="@Url.Action("GetPartialMail", "Home", new { id = Model.Id })" value="Откликнуться на вакансию" /><br />
-    </div>
-</div>
-<div>
-    <a asp-action="Index" asp-controller="Home">Вернуться к списку</a>
 </div>

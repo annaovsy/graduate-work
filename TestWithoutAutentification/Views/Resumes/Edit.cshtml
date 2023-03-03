@@ -12,12 +12,18 @@
 <h3>Изменение резюме</h3>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<div class="row justify-content-between">
+    <div class="col-md-4 w-75">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="ImageId" />
+            <input type="hidden" asp-for="CreationDate" />
+            <div class="form-group">
+                <label class="control-label">Фото</label>
+                <input type="file" class="form-control-file" id="img" name="uploadedFile" />
+            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -49,13 +55,11 @@
                 <label asp-for="GenderId" class="control-label"></label>
                 @foreach (var item in (SelectList)ViewBag.Gender)
                 {
-                    <br />
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.GenderId, item.Value, new { id = "Gender" + item.Value, @class = "form-check-input", name = "Gender", @value = item.Value, @text = item.Text })
                         <label class="control-label form-check-label" for="">@item.Text</label>
                     </div>
                 }
-                <br />
                 <span asp-validation-for="GenderId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -128,6 +132,17 @@
                 <input type="submit" value="Сохранить изменения" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+    <div class="w-25 text-center">
+        @if (@Model.Image != null)
+        {
+            <img id="img-preview" class="avatar" src="@Model.Image.Path" />
+            
+        }
+        else
+        {
+            <img id="img-preview" class="avatar" src="~/avatar/noimage.png" />
+        }
     </div>
 </div>
 

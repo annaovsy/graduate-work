@@ -49,6 +49,10 @@ namespace TestWithoutAutentification.Models
         [Display(Name = "Сайт")]
         public string Site { get; set; }
 
+        [Display(Name = "Логотип")]
+        public int? ImageId { get; set; }
+        public Image Image { get; set; }
+
         public int? RoleId { get; set; }
         public Role Role { get; set; }
 

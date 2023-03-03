@@ -1,11 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestWithoutAutentification.Models;
+using TestWithoutAutentification.Models.AdditionalModels;
 
 namespace TestWithoutAutentification.Controllers
 {   
@@ -24,7 +28,7 @@ namespace TestWithoutAutentification.Controllers
         {
             var appDbContext = _context.Vacancy
                 .Include(v => v.City)
-                .Include(v => v.Company)
+                .Include(v => v.Company.Image)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
                 .Include(v => v.Specialization)
@@ -42,7 +46,7 @@ namespace TestWithoutAutentification.Controllers
 
             var vacancy = await _context.Vacancy
                 .Include(v => v.City)
-                .Include(v => v.Company)
+                .Include(v => v.Company.Image)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
                 .Include(v => v.Specialization)
@@ -73,8 +77,8 @@ namespace TestWithoutAutentification.Controllers
             if (ModelState.IsValid)
             {
                 vacancy.Company = _context.Companies.FirstOrDefault(elem => elem.Email == User.Identity.Name);
-                vacancy.CreationDate = DateTime.Now;
 
+                vacancy.CreationDate = DateTime.Now;
                 _context.Vacancy.Add(vacancy);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -201,7 +205,7 @@ namespace TestWithoutAutentification.Controllers
 
             var vacancy = await _context.Vacancy
                 .Include(v => v.City)
-                .Include(v => v.Company)
+                .Include(v => v.Company.Image)
                 .Include(v => v.Salary.Currency)
                 .Include(v => v.WorkExperience)
                 .Include(v => v.Specialization)

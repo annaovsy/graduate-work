@@ -15,18 +15,16 @@
 <h3>Создание резюме</h3>
 <hr />
 
-<div>
+<div class="mb-2">
     <a asp-action="Index" asp-controller="Home">Отмена</a>
 </div>
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-between">
+    <div class="col-md-4 w-75">
         <form asp-action="Create" enctype="multipart/form-data">
             <div class="validation text-danger" asp-validation-summary="ModelOnly"></div>
             <div class="form-group">
-                <div class="editor-label">Файл изображения</div>
-                <div class="editor-field">
-                    <input type="file" name="uploadedFile" />
-                </div>
+                <label class="control-label">Фото</label>
+                <input type="file" class="form-control-file" id="img" name="uploadedFile" />
             </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -65,7 +63,6 @@
                         <label class="control-label form-check-label" for="">@item.Text</label>
                     </div>
                 }
-                <br />
                 <span asp-validation-for="GenderId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -136,29 +133,14 @@
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
+
         </form>
+    </div>
+    <div class="w-25 text-center">
+        <img id="img-preview" class="avatar" src="~/avatar/noimage.png" />
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script>
-        $(document).ready(function () {
-            $('#Subjects_dropdown').multiselect();
-        });
-    </script>
-    @*<script>
-            $(function () {
-                $.ajaxSetup({ cache: false });
-                $("#addPlaceOfWork").click(function (e) {
-
-                    e.preventDefault();
-                    $.get(this.href, function (data) {
-                        $('#dialogContent').html(data);
-                        $('#modDialog').modal('show');
-                    });
-                });
-            })
-        </script>*@
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}   
 }

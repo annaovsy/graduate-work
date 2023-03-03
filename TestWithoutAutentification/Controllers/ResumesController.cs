@@ -44,6 +44,7 @@ namespace TestWithoutAutentification.Controllers
                 .Include(x => x.ForeignLanguage.Language)
                 .Include(x => x.ForeignLanguage.LanguageLevel)
                 .Include(x => x.Specialization)
+                .Include(x => x.Image)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (resume == null)
             {
@@ -85,9 +86,7 @@ namespace TestWithoutAutentification.Controllers
 
                 if (uploadedFile != null)
                 {
-                    // путь к папке Files
-                    string path = "/files/" + uploadedFile.FileName;
-                    // сохраняем файл в папку Files в каталоге wwwroot
+                    string path = "/avatar/" + uploadedFile.FileName;
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
                         await uploadedFile.CopyToAsync(fileStream);
@@ -95,7 +94,7 @@ namespace TestWithoutAutentification.Controllers
                     Image file = new() { Name = uploadedFile.FileName, Path = path };
                     _context.Images.Add(file);
                     resume.Image = file;
-                }
+                }                
 
                 resume.CreationDate = DateTime.Now;
                 _context.Resume.Add(resume);
@@ -131,6 +130,7 @@ namespace TestWithoutAutentification.Controllers
                                         .Include(x => x.ForeignLanguage.Language)
                                         .Include(x => x.ForeignLanguage.LanguageLevel)
                                         .Include(x => x.Specialization)
+                                        .Include(x => x.Image)
                                         .FirstOrDefaultAsync(v => v.Id == id);
             if (resume == null)
             {
@@ -152,7 +152,7 @@ namespace TestWithoutAutentification.Controllers
         // post: resumes/edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Resume resume)
+        public async Task<IActionResult> Edit(int id, Resume resume, IFormFile uploadedFile)
         {
             if (id != resume.Id)
             {
@@ -163,6 +163,27 @@ namespace TestWithoutAutentification.Controllers
             {
                 try
                 {
+                    if (uploadedFile != null)
+                    {
+                        if (resume.ImageId != null)
+                        {
+                            DirectoryInfo dirInfo = new(_appEnvironment.WebRootPath + "/avatar/");
+                            var currImg = _context.Images.FirstOrDefault(e => e.Id == resume.ImageId);
+                            var file = dirInfo.GetFiles().Where(e => e.Name == currImg.Name).FirstOrDefault();
+                            _context.Images.Remove(currImg);
+                            file.Delete();
+                        }
+
+                        string path = "/avatar/" + uploadedFile.FileName;
+
+                        using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                        {
+                            await uploadedFile.CopyToAsync(fileStream);
+                        }
+                        Image img = new() { Name = uploadedFile.FileName, Path = path };
+                        _context.Images.Add(img);
+                        resume.Image = img;
+                    }
                     _context.Update(resume);
                     await _context.SaveChangesAsync();
                 }
@@ -199,11 +220,19 @@ namespace TestWithoutAutentification.Controllers
                 return NotFound();
             }
 
-            var resume = await _context.Resume
+            var resume = await _context.Resume.Include(e => e.Image)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (resume == null)
             {
                 return NotFound();
+            }
+            if (resume.Image != null)
+            {
+                DirectoryInfo dirInfo = new(_appEnvironment.WebRootPath + "/avatar/");
+                var currImg = _context.Images.FirstOrDefault(e => e.Id == resume.Image.Id);
+                var file = dirInfo.GetFiles().Where(e => e.Name == currImg.Name).FirstOrDefault();
+                _context.Images.Remove(currImg);
+                file.Delete();
             }
 
             return View(resume);
@@ -244,6 +273,7 @@ namespace TestWithoutAutentification.Controllers
                     .Include(x => x.ForeignLanguage.Language)
                     .Include(x => x.ForeignLanguage.LanguageLevel)
                     .Include(x => x.Specialization)
+                    .Include(x => x.Image)
                     .FirstOrDefaultAsync(m => m.Id == id);
                 if (resume == null)
                 {

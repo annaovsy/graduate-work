@@ -58,7 +58,13 @@
             <span class="font-weight-bold">@item.Salary.Amount @item.Salary.Currency.Name</span>
             <div>
                 <span class="list-description">О компании</span><br />
-                <a href="@item.Company.Site">@item.Company.Name</a> <br />
+                <div class="d-flex">
+                    @if (item.Company.Image != null)
+                    {
+                        <img class="smallLogo" src="@item.Company.Image.Path" />
+                    }
+                    <a href="@item.Company.Site">@item.Company.Name</a> <br />
+                </div>
                 @if (item.CityId != null)
                 {
                     <span>г. @item.City.Name</span>

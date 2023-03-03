@@ -26,7 +26,7 @@ namespace TestWithoutAutentification.Controllers
         {          
             var vacancies = _context.Vacancy
                    .Include(v => v.City)
-                   .Include(v => v.Company)
+                   .Include(v => v.Company.Image)
                    .Include(v => v.Salary.Currency)
                    .Include(v => v.WorkExperience)
                    .Include(v => v.Specialization);
