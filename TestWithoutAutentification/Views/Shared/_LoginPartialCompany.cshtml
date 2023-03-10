@@ -1,21 +1,20 @@
-﻿
-@if (User.Identity.IsAuthenticated && User.IsInRole("company"))
+﻿@if (User.Identity.IsAuthenticated && User.IsInRole("company"))
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right mb-4">
-            <li>
-                @Html.ActionLink("Ваши Вакансии", "Index", "Vacancies")
-            </li>
-            <li>
-                @Html.ActionLink(User.Claims.FirstOrDefault(c => c.Type == "userName").Value.ToString(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Личный кабинет" })
-            </li>
-            <li>
-                @Html.ActionLink("Выйти", "CompanyLogout", "Account", routeValues: null, htmlAttributes: new { id = "logoutLink" })
-            </li>
-        </ul>
+<ul class="nav navbar-nav navbar-right mb-4">
+    <li>
+        @Html.ActionLink("Ваши Вакансии", "Index", "Vacancies")
+    </li>
+    <li>
+        @Html.ActionLink(User.Claims.FirstOrDefault(c => c.Type == "userName").Value.ToString(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Личный кабинет" })
+    </li>   
+    <li>
+        @Html.ActionLink("Выйти", "CompanyLogout", "Account", routeValues: null, htmlAttributes: new { id = "logoutLink" })
+    </li>
+</ul>
     }
 }
 else

@@ -59,4 +59,12 @@
     <SourceGeneratorInput Remove="Migrations\20230226084058_editCity.Designer.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230310133040_changeRegister.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceGeneratorInput Remove="Migrations\20230310133040_changeRegister.Designer.cs" />
+  </ItemGroup>
+
 </Project>

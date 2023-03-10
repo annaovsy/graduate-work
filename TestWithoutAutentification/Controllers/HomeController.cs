@@ -121,5 +121,13 @@ namespace TestWithoutAutentification.Controllers
 
             return PartialView("_GeneralModal");         
         }
+
+        public async Task<IActionResult> PersonalArea()
+        {
+            var user = _context.Users.Include(u => u.Resume)
+                        .FirstOrDefault(i => i.Email == User.Identity.Name);           
+
+            return View(user);
+        }
     }
 }

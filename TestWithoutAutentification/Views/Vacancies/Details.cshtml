@@ -57,6 +57,17 @@
                 @Html.DisplayFor(model => model.WorkExperience.Name)
             </dd>
         </dl>
+        @if (Model.Responsibilities != null)
+        {
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Responsibilities)
+                </dt>
+                <dd class="col-sm-8">
+                    <textarea asp-for="Responsibilities" style="overflow:hidden;" class="textareaShow" readonly></textarea>
+                </dd>
+            </dl>
+        }
         <dl class="row">
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Requirements)

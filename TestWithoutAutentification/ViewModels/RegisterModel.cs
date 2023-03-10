@@ -4,7 +4,7 @@ namespace TestWithoutAutentification.ViewModels
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "Не указано Имя")]
+        [Required(ErrorMessage = "Не указан Логин")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Не указан Email")]

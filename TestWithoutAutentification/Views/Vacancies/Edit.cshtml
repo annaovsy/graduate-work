@@ -21,7 +21,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="CompanyId" />
-            <input type="hidden" asp-for="CreationDate" />            
+            <input type="hidden" asp-for="CreationDate" />
             <div class="form-group">
                 <label asp-for="Position" class="control-label"></label>
                 <input asp-for="Position" class="form-control" />
@@ -70,6 +70,11 @@
                     <option selected disabled> </option>
                 </select>
                 <span asp-validation-for="WorkExperienceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Responsibilities" class="control-label"></label>
+                <textarea asp-for="Responsibilities" rows="8" class="form-control"></textarea>
+                <span asp-validation-for="Responsibilities" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Requirements" class="control-label"></label>

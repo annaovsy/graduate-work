@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using TestWithoutAutentification.Models.AdditionalModels;
+using System.Linq;
 
 namespace TestWithoutAutentification.Controllers
 {
@@ -61,15 +62,15 @@ namespace TestWithoutAutentification.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register(User modelUser)
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Email == modelUser.Email);
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    user = new User { Name = model.Name, Email = model.Email, Password = HashPassword(model.Password)};
+                    user = new User { Name = modelUser.Name, Email = modelUser.Email, Password = HashPassword(modelUser.Password)};
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
                         user.Role = userRole;
@@ -84,7 +85,102 @@ namespace TestWithoutAutentification.Controllers
                 }
                 ModelState.AddModelError("", "Данный Email зарегистрирован в системе");
             }
-            return View(model);
+            return View(modelUser);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(int id, User user)
+        {
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                    if (userRole != null)
+                        user.Role = userRole;
+                    user.Password = HashPassword(user.Password);
+                    db.Update(user);
+                    await db.SaveChangesAsync();
+                    await Authenticate(user.Email, user.Role.Name, user.Name); // аутентификация
+
+                    return RedirectToAction("PersonalArea", "Home");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }           
+            return View(user);
+        }
+
+        // get: resumes/delete/5
+        public async Task<IActionResult> DeleteUser(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await db.Users.Include(u => u.Resume).FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }                
+
+            return View(user);
+        }
+
+        // post: resumes/delete/5
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedUser(int id)
+        {
+            var user = await db.Users.Include(u => u.Resume).FirstOrDefaultAsync(u => u.Id == id);
+            
+            if(user.Resume != null)
+            {
+                db.Resume.Remove(user.Resume);
+            }
+
+            db.Users.Remove(user);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Logout", "Account");
+        }
+
+        private bool UserExists(int id)
+        {
+            return db.Users.Any(e => e.Id == id);
         }
 
         public async Task<IActionResult> Logout()

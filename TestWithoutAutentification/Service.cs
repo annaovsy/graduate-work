@@ -179,7 +179,7 @@ namespace TestWithoutAutentification
                 using (MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient())
                 {
                     client.Connect("smtp.yandex.ru", 465, true); //либо использум порт 465
-                    client.Authenticate("anna.ovsyann1kova@yandex.ru", "saxmalutka"); //логин-пароль от аккаунта
+                    client.Authenticate("JobSearchApp@yandex.ru", "jobsearchapp1234"); //логин-пароль от аккаунта
                     client.Send(message);
                    
                     client.Disconnect(true);
@@ -196,7 +196,7 @@ namespace TestWithoutAutentification
             try
             {
                 MimeMessage message = new MimeMessage();
-                message.From.Add(new MailboxAddress("Поиск работы", "anna.ovsyann1kova@yandex.ru")); //отправитель сообщения
+                message.From.Add(new MailboxAddress("JobSearchApp", "JobSearchApp@yandex.ru")); //отправитель сообщения
                 message.To.Add(new MailboxAddress(recipient, recipient)); //адресат сообщения
                 message.Subject = "Отклик на вакансию";
                 
@@ -214,7 +214,7 @@ namespace TestWithoutAutentification
                 using (MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient())
                 {
                     client.Connect("smtp.yandex.ru", 465, true); //либо использум порт 465
-                    client.Authenticate("anna.ovsyann1kova@yandex.ru", "saxmalutka"); //логин-пароль от аккаунта
+                    client.Authenticate("JobSearchApp@yandex.ru", "jobsearchapp1234"); //логин-пароль от аккаунта
                     client.Send(message);
 
                     client.Disconnect(true);

@@ -96,13 +96,13 @@
                 </div>
                 <span asp-validation-for="Salary.Amount" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label class="control-label">Места работы</label>
                 <button type="button" class="btn btn-primary form-control" data-toggle="ajax-modal" data-bind="Model" data-target="#addPlaceOfWork"
                         data-url="@Url.Action("CreatePlacesOfWork", "Resumes")">
                     Добавить место работы
                 </button>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="AboutMyself" class="control-label"></label>
                 <textarea asp-for="AboutMyself" rows="5" class="form-control"></textarea>

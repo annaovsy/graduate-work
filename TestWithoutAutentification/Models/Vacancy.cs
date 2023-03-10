@@ -41,6 +41,9 @@ namespace TestWithoutAutentification.Models
         public int? WorkExperienceId { get; set; }
         public WorkExperience WorkExperience { get; set; }
 
+        [Display(Name = "Обязанности")]
+        public string Responsibilities { get; set; }
+
         [Required(ErrorMessage = "Обязательное поле")]
         [Display(Name = "Требования")]
         public string Requirements { get; set; }

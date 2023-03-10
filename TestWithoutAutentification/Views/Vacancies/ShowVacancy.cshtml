@@ -52,6 +52,17 @@
                 @Html.DisplayFor(model => model.WorkExperience.Name)
             </dd>
         </dl>
+        @if (Model.Responsibilities != null)
+        {
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Responsibilities)
+                </dt>
+                <dd class="col-sm-8">
+                    <textarea asp-for="Responsibilities" style="overflow:hidden;" class="textareaShow" readonly></textarea>
+                </dd>
+            </dl>
+        }
         <dl class="row">
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Requirements)
@@ -99,8 +110,8 @@
         <div class="mb-3" style="font-size: 0.85rem; color:gray;">
             Создано @Html.DisplayFor(model => model.CreationDate)
         </div>
-        <div>
-            <input type="button" class="btn btn-primary modalBtn" data-url="@Url.Action("GetPartialMail", "Home", new { id = Model.Id })" value="Откликнуться на вакансию" /><br />
+        <div class="mt-4 mb-4">
+            <input type="button" class="btn btn-primary modalBtn" data-url="@Url.Action("GetPartialMail", "Home", new { id = Model.Id })" value="Откликнуться на вакансию"/><br />
         </div>
         <div>
             <a asp-action="Index" asp-controller="Home">Вернуться к списку</a>

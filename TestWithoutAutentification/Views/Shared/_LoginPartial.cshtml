@@ -8,7 +8,7 @@
                 @Html.ActionLink("Резюме", "Create", "Resumes")
             </li>
             <li>
-                @Html.ActionLink(User.Claims.FirstOrDefault(c => c.Type == "userName").Value.ToString(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Личный кабинет" })
+                @Html.ActionLink(User.Claims.FirstOrDefault(c => c.Type == "userName").Value.ToString(), "PersonalArea", "Home", routeValues: null, htmlAttributes: new { title = "Личный кабинет" })
             </li>
             <li>
                 @Html.ActionLink("Выйти", "Logout", "Account", routeValues: null, htmlAttributes: new { id = "logoutLink" })
